@@ -10,12 +10,13 @@ const StyledNavLink = styled.a`
     line-height: ${rem('23px')};
     text-decoration: none;
     padding: ${rem('13.5px')} ${rem('15px')};
+    display: inline-block;
 `;
-
-
 
 export const NavLink: FunctionComponent<Omit<LinkProps, 'passHref'>> = (props) => (
     <Link {...props} passHref={true}>
         <StyledNavLink>{props.children}</StyledNavLink>
     </Link>
 );
+
+export const NavLinkExternal = StyledNavLink;
