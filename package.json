@@ -25,7 +25,6 @@
     "styled-components": "^4.3.2"
   },
   "devDependencies": {
-<<<<<<< HEAD
     "@storybook/addon-actions": "^5.1.11",
     "@storybook/addon-backgrounds": "^5.1.11",
     "@storybook/addon-info": "^5.1.11",
