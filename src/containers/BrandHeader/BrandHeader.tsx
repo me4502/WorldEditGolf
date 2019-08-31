@@ -18,6 +18,9 @@ const StyledContainerBase = styled.div`
 const StyledContainer = styled(StyledContainerBase)`
   display: flex;
   flex-direction: row;
+  >:not(:last-child) {
+    margin-right: 10px;
+  }
 `;
 
 export const BrandHeader: FunctionComponent = () => (
