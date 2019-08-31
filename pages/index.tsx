@@ -1,13 +1,14 @@
 import React from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
+import styled from 'styled-components';
 
 const Home = () => (
   <div>
     <Head>
       <title>Home</title>
     </Head>
-
+    <a href="https://github.com/login/oauth/authorize?client_id=bf285fd6423d97eb3b63">Signup</a>
     <div className='hero'>
       <h1 className='title'>Welcome to Next.js!</h1>
       <p className='description'>
