@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Head from 'next/head';
 import {Header} from "../src/components/Header/Header";
 import {Layout} from "../src/containers/Layout/Layout";
+import {Logo} from "../src/components/Logo/Logo";
 
 const Home = () => (
     <Layout>
@@ -11,6 +12,7 @@ const Home = () => (
                 <title>Home</title>
             </Head>
             <div className='hero'>
+                <Logo />
                 <Header>Welcome to WorldEdit Golf</Header>
                 <p className='description'>
                     To get started, edit <code>pages/index.js</code> and save to reload.
