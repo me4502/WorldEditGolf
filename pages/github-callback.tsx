@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import router from 'next/router';
 
 const Page = () => {
 
@@ -17,6 +18,7 @@ const Page = () => {
       .then(({error, token}) => {
         if (token) {
           window.localStorage.setItem("token", token);
+          router.push('/');
         } else if (error) {
           setError(error);
         } else {
