@@ -1,9 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import router from 'next/router';
+import {Layout} from '../src/containers/Layout/Layout';
+import {useSetToken} from '../src/components/Auth';
 
 const Page = () => {
 
   const [errorMessage, setError] = useState<string>();
+
+  const setToken = useSetToken();
 
   useEffect(() => {
     const code = new URLSearchParams(location.search).get('code');
@@ -17,7 +21,7 @@ const Page = () => {
       .then(res => res.json() as Promise<{error?: string, token?: string}>)
       .then(({error, token}) => {
         if (token) {
-          window.localStorage.setItem("token", token);
+          setToken(token);
           router.push('/');
         } else if (error) {
           setError(error);
@@ -27,7 +31,9 @@ const Page = () => {
       });
   }, []);
 
-  return (errorMessage ? <h1>{errorMessage}</h1> : <h1>Logging in...</h1>);
+  return errorMessage ? <h1>{errorMessage}</h1> : <h1>Logging in...</h1>;
 }
 
-export default Page;
+export default () => (<Layout>
+  <Page />
+</Layout>);
