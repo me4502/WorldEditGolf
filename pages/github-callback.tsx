@@ -13,7 +13,7 @@ const Page = () => {
       return;
     }
 
-    fetch('/api/github-oauth', {method: 'POST', headers: {"Content-Type": "application/json"}, body: JSON.stringify({code})})
+    fetch('/api/github-oauth', {method: 'POST', headers: {"content-type": "application/json"}, body: JSON.stringify({code})})
       .then(res => res.json() as Promise<{error?: string, token?: string}>)
       .then(({error, token}) => {
         if (token) {
