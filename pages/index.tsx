@@ -1,15 +1,16 @@
 import React from 'react';
 import Link from 'next/link';
 import Head from 'next/head';
+import {Header} from "../src/components/Header/Header";
 
 const Home = () => (
   <div>
     <Head>
       <title>Home</title>
     </Head>
-
+    <a href="https://github.com/login/oauth/authorize?client_id=bf285fd6423d97eb3b63">Signup</a>
     <div className='hero'>
-      <h1 className='title'>Welcome to Next.js!</h1>
+      <Header>Welcome to WorldEdit Golf</Header>
       <p className='description'>
         To get started, edit <code>pages/index.js</code> and save to reload.
       </p>
