@@ -2,6 +2,12 @@ import {NextApiRequest, NextApiResponse} from 'next-server/dist/lib/utils';
 import got from 'got';
 import jwt from 'jsonwebtoken';
 
+interface UserResponse {
+    body: {
+        id: string;
+    }
+}
+
 export default async function handle(req: NextApiRequest, res: NextApiResponse) {
 
     res.setHeader("Content-Type", "application/json");
@@ -30,7 +36,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
         const [key, value] = a.split('=');
         acc[key] = value;
         return acc;
-    }, {});
+    }, {} as {[key: string]: string});
 
     if (data.error) {
         res.write(JSON.stringify(data));
@@ -52,7 +58,7 @@ export default async function handle(req: NextApiRequest, res: NextApiResponse) 
 
     try {
 
-        const {body: {id: github_id}} = await got('https://api.github.com/user', {headers: {'Authorization': `token ${access_token}`}});
+        const {body: {id: github_id}} = await got('https://api.github.com/user', {json: true, headers: {'Authorization': `token ${access_token}`}});
 
         token = jwt.sign({
             github_id
