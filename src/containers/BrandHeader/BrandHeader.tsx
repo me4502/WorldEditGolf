@@ -30,9 +30,9 @@ export const BrandHeader: FunctionComponent = () => (
             <Title>WorldEdit Golf</Title>
         </StyledContainer>
         <StyledContainerBase>
-            <Header>Real WorldEdit ninjas count every keystroke - do you?</Header>
+            <Header>Real WorldEdit ninjas count every command - do you?</Header>
             <Header>I know WorldEdit</Header>
-            <Paragraph>Pick a challenge, fire up WorldEdit, and show us what you got.</Paragraph>
+            <Paragraph>Pick a challenge, write some commands, and show us what you got.</Paragraph>
         </StyledContainerBase>
     </div>
 );
