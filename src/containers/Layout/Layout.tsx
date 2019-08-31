@@ -4,10 +4,11 @@ import {NavEngineHub} from "../NavEngineHub/NavEngineHub";
 import {BrandHeader} from "../BrandHeader/BrandHeader";
 import {styled} from "../../components/style/styled";
 import {rem} from "../../components/style/rem";
-import {Footer} from "../Footer/Footer";
+import {BrandFooter} from "../BrandFooter/BrandFooter";
 
 const PageContainer = styled.div`
   padding: 0 ${rem(152)};
+  flex: 1;
 `;
 
 const LayoutContainer = styled.div`
@@ -23,6 +24,6 @@ export const Layout: FunctionComponent = (props) => (
             <BrandHeader />
             {props.children}
         </PageContainer>
-        <Footer/>
+        <BrandFooter/>
     </LayoutContainer>
 );
