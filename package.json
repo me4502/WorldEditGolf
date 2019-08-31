@@ -12,6 +12,8 @@
     "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
+    "@babel/core": "^7.5.5",
+    "babel-loader": "^8.0.6",
     "bcrypt": "^3.0.6",
     "got": "^9.6.0",
     "jsonwebtoken": "^8.5.1",

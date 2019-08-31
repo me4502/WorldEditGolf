@@ -10,4 +10,8 @@ export const GlobalStyle = createGlobalStyle`
   body {
     font-family: ${PrimaryTheme.fontFamily};
   }
+  
+  * {
+    box-sizing: border-box;
+  }
 `;
