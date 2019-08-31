@@ -6,6 +6,8 @@ interface QueueRequest {
   input: string;
   test: string;
   script: string;
+  golfId: string;
+  token: string;
 }
 
 interface QueueResponse {
@@ -25,24 +27,17 @@ export async function queueTask(request: QueueRequest): Promise<QueueResponse> {
     method: 'post',
     body: JSON.stringify(request),
     headers: {
-        authorization: 'TODO'
+      authorization: 'TODO'
     }
   })).json();
 }
 
 export async function clearTask(taskId: string): Promise<void> {
-  await fetch(`${BROKER_API_HOSTNAME}/clear/${taskId}`, {
-    headers: {
-        authorization: 'TODO'
-    }
-  });
+  await fetch(`${BROKER_API_HOSTNAME}/clear/${taskId}`);
 }
 
 export async function pollBroker(taskId: string): Promise<PollResponse> {
   return (await fetch(`${BROKER_API_HOSTNAME}/poll/${taskId}`, {
-    method: 'post',
-    headers: {
-        authorization: 'TODO'
-    }
+    method: 'post'
   })).json();
 }
