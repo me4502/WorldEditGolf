@@ -2,6 +2,19 @@ import React, {useEffect, useState} from 'react';
 import router from 'next/router';
 import {Layout} from '../src/containers/Layout/Layout';
 import {useSetToken} from '../src/components/Auth';
+import {Loading} from '../src/components/Loading';
+import styled from 'styled-components';
+
+const LoadingContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 120px;
+
+  h1 {
+    margin-left: 20px;
+  }
+`;
 
 const Page = () => {
 
@@ -31,7 +44,10 @@ const Page = () => {
       });
   }, []);
 
-  return errorMessage ? <h1>{errorMessage}</h1> : <h1>Logging in...</h1>;
+  return errorMessage ? <h1>{errorMessage}</h1> : (<LoadingContainer>
+    <Loading />
+    <h1>Loading...</h1>
+    </LoadingContainer>);
 }
 
 export default () => (<Layout>
