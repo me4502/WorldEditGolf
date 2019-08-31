@@ -8,7 +8,8 @@
     "start": "next start",
     "type-check": "tsc --project ./tsconfig.json --noEmit",
     "lint": "tslint --config ./tslint.json --project ./tsconfig.json",
-    "lint:fix": "tslint --config ./tslint.json --project ./tsconfig.json --fix"
+    "lint:fix": "tslint --config ./tslint.json --project ./tsconfig.json --fix",
+    "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
     "next": "9.0.5",
@@ -20,8 +21,17 @@
     "styled-components": "^4.3.2"
   },
   "devDependencies": {
+    "@storybook/addon-actions": "^5.1.11",
+    "@storybook/addon-backgrounds": "^5.1.11",
+    "@storybook/addon-info": "^5.1.11",
+    "@storybook/addon-knobs": "^5.1.11",
+    "@storybook/addon-links": "^5.1.11",
+    "@storybook/addon-storyshots": "^5.1.11",
+    "@storybook/addons": "^5.1.11",
+    "@storybook/react": "^5.1.11",
     "@types/node": "^12.7.3",
     "@types/react": "^16.9.2",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
     "tslint": "^5.19.0",
     "tslint-react": "^4.0.0",
     "typescript": "^3.6.2"
