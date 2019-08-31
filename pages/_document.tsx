@@ -2,7 +2,7 @@ import React from 'react';
 import Document, { Head, Main, NextScript, Html } from 'next/document';
 import Helmet from 'react-helmet';
 
-class MyDocument extends Document {
+class MyDocument extends Document<any> {
     static async getInitialProps(ctx) {
         const initialProps = await Document.getInitialProps(ctx);
         return { ...initialProps, helmet: Helmet.renderStatic() };

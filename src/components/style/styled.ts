@@ -5,6 +5,8 @@ export type Theme = typeof PrimaryTheme;
 export const styled = baseStyled as ThemedStyledInterface<Theme>;
 
 export const GlobalStyle = createGlobalStyle`
+  @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
   body {
     font-family: ${PrimaryTheme.fontFamily};
   }
