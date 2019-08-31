@@ -3,7 +3,6 @@ import Link from 'next/link';
 import Head from 'next/head';
 import {Header} from "../src/components/Header/Header";
 import {Layout} from "../src/containers/Layout/Layout";
-import {NavEngineHub} from "../src/containers/NavEngineHub/NavEngineHub";
 
 const Home = () => (
     <Layout>
@@ -11,7 +10,6 @@ const Home = () => (
             <Head>
                 <title>Home</title>
             </Head>
-            <a href="https://github.com/login/oauth/authorize?client_id=bf285fd6423d97eb3b63">Signup</a>
             <div className='hero'>
                 <Header>Welcome to WorldEdit Golf</Header>
                 <p className='description'>
