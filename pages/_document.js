@@ -27,7 +27,7 @@ class MyDocument extends Document {
                         rel="shortcut icon"
                         href="/static/icons/icon-48x48.png"
                     />
-                    <meta name="theme-color" content={PrimaryTheme.brandColor} />
+                    <meta name="theme-color" content="#4B3570" />
                     <link
                         rel="apple-touch-icon"
                         sizes="48x48"
