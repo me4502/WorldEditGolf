@@ -1,0 +1,20 @@
+service: worldedit-golf
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  memorySize: 128
+
+plugins:
+- serverless-nextjs-plugin
+- serverless-offline
+
+package:
+  # exclude everything
+  # page handlers are automatically included by the plugin
+  exclude:
+    - ./**
+
+custom:
+  serverless-nextjs:
+    assetsBucketName: "static.worldedit.golf"
