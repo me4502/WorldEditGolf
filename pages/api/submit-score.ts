@@ -1,14 +1,27 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { addLeaderboard } from '../../src/dynamoDb';
+import { withAuth } from '../../src/auth';
 
 const EXPECTED_KEY = process.env.BROKER_API_KEY;
 
-export default async function handle(req: NextApiRequest, res: NextApiResponse) {
-    const { api_key, token: _token, golfId: _golfId } = req.body;
+const handler = withAuth(async (req, res) => {
+  const { api_key, golfId, score, commands } = req.body;
 
-    if (api_key !== EXPECTED_KEY) {
-        res.end(403, 'Invalid API Key');
-        return;
-    }
+  if (api_key !== EXPECTED_KEY) {
+    res.end(403, 'Invalid API Key');
+    return;
+  }
 
+  try {
+    await addLeaderboard({
+      golf_id: golfId,
+      score: score,
+      user_id: req.githubId,
+      commands
+    });
     res.end('Score submitted');
-}
+  } catch (e) {
+    res.end(501, 'Failed to submit score');
+  }
+});
+
+export default handler;
