@@ -23,7 +23,7 @@ const verifyToken = (token: string) => new Promise<DecodedToken>((resolve, rejec
             if (isDecodedToken(decoded)) {
                 resolve(decoded);
             } else {
-                reject(new Error("Token was not a valid token!");
+                reject(new Error("Token was not a valid token!"));
             }
         } else {
             reject(error);
