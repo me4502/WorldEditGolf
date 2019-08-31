@@ -1,6 +1,5 @@
 import {styled} from "../style/styled";
 
-export const Header = styled.h1`
-  font-size: 16px;
+export const Paragraph = styled.p`
   color: ${props => props.theme.primaryLightColor};
 `;
