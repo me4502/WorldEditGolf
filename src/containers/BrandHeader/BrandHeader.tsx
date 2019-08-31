@@ -12,10 +12,10 @@ const StyledContainerBase = styled.div`
   width: 100%;
   align-items: center;
   padding: ${Padding()};
+  border-bottom: solid ${props => props.theme.primaryLightColor} ${rem(2)};
 `;
 
 const StyledContainer = styled(StyledContainerBase)`
-  border-bottom: solid ${props => props.theme.primaryLightColor} ${rem(2)};
   display: flex;
   flex-direction: row;
 `;

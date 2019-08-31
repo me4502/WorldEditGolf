@@ -1,3 +1,3 @@
 import {rem} from "./rem";
 
-export const Padding = () => `${rem(20)} 0`;
+export const Padding = () => `${rem(10)} 0`;
