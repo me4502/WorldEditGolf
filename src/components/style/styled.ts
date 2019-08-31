@@ -14,4 +14,8 @@ export const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
   }
+  
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
 `;
