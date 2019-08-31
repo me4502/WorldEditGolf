@@ -135,16 +135,48 @@ export async function addGolf(golf: Golf): Promise<void> {
   });
 }
 
-export async function addLeaderboard(
-  leaderboard: GolfLeaderboard
-): Promise<void> {
-  const createParams: AWS.DynamoDB.DocumentClient.PutItemInput = {
-    TableName: LeaderboardTableName,
-    Item: leaderboard
+export async function unhideGolf(golfId: string): Promise<void> {
+  const updateParams: AWS.DynamoDB.DocumentClient.UpdateItemInput = {
+    TableName: GolfsTableName,
+    Key: {
+      golf_id: golfId
+    },
+    UpdateExpression: `set hidden=:hidden`,
+    ExpressionAttributeValues: {
+      ':hidden': false
+    }
   };
 
   return new Promise((resolve, reject) => {
-    docClient.put(createParams, (err, _data) => {
+    docClient.update(updateParams, (err, _data) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
+}
+
+export async function addLeaderboard(
+  leaderboard: GolfLeaderboard
+): Promise<void> {
+  const updateParams: AWS.DynamoDB.DocumentClient.UpdateItemInput = {
+    TableName: LeaderboardTableName,
+    Key: {
+      golf_id: leaderboard.golf_id,
+      user_id: leaderboard.user_id
+    },
+    UpdateExpression: `set commands=:commands, score=:score, date=:date`,
+    ExpressionAttributeValues: {
+      ':commands': leaderboard.commands,
+      ':score': leaderboard.score,
+      ':date': leaderboard.date
+    }
+  };
+
+  return new Promise((resolve, reject) => {
+    docClient.update(updateParams, (err, _data) => {
       if (err) {
         reject(err);
       } else {

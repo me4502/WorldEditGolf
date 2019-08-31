@@ -8,6 +8,7 @@ interface QueueRequest {
   script: string;
   golfId: string;
   token: string;
+  initial: boolean;
 }
 
 interface QueueResponse {
