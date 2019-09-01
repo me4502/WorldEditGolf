@@ -8,6 +8,7 @@ interface FileSelectorProps {
   accept?: string;
   onChange?: (file?: File) => void;
   filter?: (file: File) => boolean;
+  disabled?: boolean;
 }
 
 const Input = styled.input`
@@ -38,6 +39,7 @@ export const FileSelector: FunctionComponent<FileSelectorProps> = ({
   filter,
   accept,
   onChange,
+  disabled,
   ...rest
 }) => {
   const [files, setFiles] = useState<File[]>([]);
@@ -66,7 +68,7 @@ export const FileSelector: FunctionComponent<FileSelectorProps> = ({
     <Container {...rest}>
       <Label>{name}</Label>
       <ActionContainer>
-        <Button onClick={openFilePicker}>Select File</Button>
+        <Button disabled={disabled} onClick={openFilePicker}>Select File</Button>
         <FileName>{files[0] && files[0].name}</FileName>
       </ActionContainer>
       <Input

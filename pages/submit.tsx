@@ -9,6 +9,7 @@ import { TextArea } from '../src/components/Input/TextArea';
 import Input from '../src/components/Input/Input';
 import { useAuthenticatedFetch } from '../src/components/Auth';
 import { Loading } from '../src/components/Loading';
+import { Schematic } from '../src/components/Schematic';
 
 const Container = styled.div`
     position: relative;
@@ -19,6 +20,7 @@ const LoadingContainer = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
+    z-index: 1;
     justify-content: center;
     height: 100%;
     background: rgba(255, 255, 255, 0.8);
@@ -167,12 +169,15 @@ const Submit = () => {
             <Input onChange={setName} name="Title" />
             <TextArea onChange={setDescription} name="Description" />
             <FileSelector
+                disabled={!!loading}
                 onChange={setLoadingFile('start')}
                 accept=".schem"
                 filter={filter}
                 name="Start Schematic"
             />
+            {start && <Schematic schematic={start} />}
             <FileSelector
+                disabled={!!loading}
                 onChange={setLoadingFile('test')}
                 accept=".schem"
                 filter={filter}
