@@ -209,7 +209,7 @@ function buildSceneFromSchematic(tag: Tag, scene: Scene): [number, number, numbe
     return [width, height, length];
 }
 
-export function renderSchematic(canvas: HTMLCanvasElement, schematic: string): () => void {
+export function renderSchematic(canvas: HTMLCanvasElement, schematic: string, size: number): () => void {
     const scene = new Scene();
     let hasDestroyed = false;
     let isDragging = false;
@@ -296,7 +296,7 @@ export function renderSchematic(canvas: HTMLCanvasElement, schematic: string): (
     
     const renderer = new WebGLRenderer({ antialias: true, canvas });
     renderer.setClearColor(new Color(0xFFFFFF));
-    renderer.setSize(500, 500);
+    renderer.setSize(size, size);
 
     canvas.addEventListener('mousedown', mousedownCallback);
     document.body.addEventListener('mousemove', mousemoveCallback);
