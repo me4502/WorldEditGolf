@@ -25,12 +25,13 @@
     "react-helmet": "^5.2.1",
     "serverless-nextjs-plugin": "^2.3.4",
     "serverless-offline": "^5.10.1",
-    "styled-components": "^4.3.2",
     "@types/gzip-js": "^0.3.1",
     "gzip-js": "^0.3.2",
     "nbt-ts": "^1.2.3",
     "three": "^0.108.0",
-    "zlibt": "0.0.5"
+    "zlibt": "0.0.5",
+    "shortid": "^2.2.14",
+    "styled-components": "^4.3.2"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.1.11",
@@ -45,6 +46,7 @@
     "@types/jsonwebtoken": "^8.3.3",
     "@types/node": "^12.7.3",
     "@types/react": "^16.9.2",
+    "@types/shortid": "^0.0.29",
     "@types/styled-components": "^4.1.18",
     "babel-plugin-styled-components": "^1.10.6",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
