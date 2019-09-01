@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { NextPageContext } from 'next-server/dist/lib/utils';
 import { Layout } from '../../src/containers/Layout/Layout';
 import Head from 'next/head';
-import { getGolf, getLeaderboard } from '../../src/dynamoDb';
-import { Golf, GolfLeaderboard } from '../../src/types/database';
+import { getGolf, getLeaderboard, getUser } from '../../src/dynamoDb';
+import { Golf, GolfLeaderboard, User } from '../../src/types/database';
 import Router from 'next/router';
 import {
     LeaderboardEntry,
@@ -19,6 +19,7 @@ import { Button } from '../../src/components/Input/Button';
 interface DocumentProps {
     golf: Golf;
     leaderboards: GolfLeaderboard[];
+    userMap: Map<string, User>;
 }
 
 const PageColumns = styled.div`
@@ -56,7 +57,7 @@ const ResultPreview = styled(PreviewArea)`
     margin-top: 48px;
 `;
 
-function Document({ golf, leaderboards }: DocumentProps) {
+function Document({ golf, leaderboards, userMap }: DocumentProps) {
     const [taskId, setTaskId] = useState(undefined);
     const [resultSchem, setResultSchem] = useState(undefined);
     const commandBox = useRef<HTMLTextAreaElement>(null);
@@ -119,7 +120,7 @@ function Document({ golf, leaderboards }: DocumentProps) {
         try {
             const queueResponse = await queueTask({
                 golfId: golf.golf_id,
-                initial: golf.hidden,
+                initial: golf.isHidden,
                 input: golf.start_schematic,
                 script: commandBox.current!.value,
                 test: golf.test_schematic,
@@ -180,6 +181,7 @@ function Document({ golf, leaderboards }: DocumentProps) {
                 <SideLeaderboard>
                     {leaderboards.map(leaderboard => {
                         const date = new Date(leaderboard.date);
+                        const user = userMap.get(leaderboard.user_id);
                         return (
                             <LeaderboardEntry
                                 key={`${golf.golf_id}-${leaderboard.user_id}`}
@@ -193,8 +195,8 @@ function Document({ golf, leaderboards }: DocumentProps) {
                                     date.toDateString()
                                 }
                                 githubId={leaderboard.user_id}
-                                name={leaderboard.user_id}
-                                avatar={''}
+                                name={user ? user.name : leaderboard.user_id}
+                                avatar={user ? user.avatar : ''}
                             />
                         );
                     })}
@@ -209,6 +211,7 @@ Document.getInitialProps = async ({ query, res }: NextPageContext) => {
 
     const golf = await getGolf(golfId as string);
     const leaderboards = await getLeaderboard(golfId as string);
+
     if (!golf) {
         if (res) {
             res.writeHead(302, {
@@ -219,7 +222,17 @@ Document.getInitialProps = async ({ query, res }: NextPageContext) => {
             Router.push('/');
         }
     }
-    return { golf, leaderboards };
+    let userMap = new Map();
+
+    if (leaderboards) {
+        const sortedLeaderboards = leaderboards.sort((a, b) => {   
+            return a.score - b.score || a.date - b.date;
+        });
+        const leaderUsers = sortedLeaderboards.map(lead => lead.user_id);
+        const users = await Promise.all(leaderUsers.map(user => getUser(user)));
+        userMap = new Map(users.map(user => [user.user_id, user]));
+    }
+    return { golf, leaderboards, userMap };
 };
 
 export default Document;

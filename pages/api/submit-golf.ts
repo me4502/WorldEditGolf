@@ -52,7 +52,7 @@ const handler = withAuth(async (req, res) => {
             start_schematic,
             test_schematic,
             description,
-            hidden: true,
+            isHidden: true,
             golf_id,
             user_id: req.githubId,
             created_at: Date.now()
