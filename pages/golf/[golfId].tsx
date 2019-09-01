@@ -12,6 +12,7 @@ import {
 import styled from 'styled-components';
 import { pollBroker, queueTask, clearTask } from '../../src/broker';
 import PrimaryTheme from '../../src/components/style/theme';
+import { Schematic } from '../../src/components/Schematic';
 
 interface DocumentProps {
     golf: Golf;
@@ -30,6 +31,7 @@ const PreviewBox = styled.div`
     display: flex;
     justify-content: space-between;
     width: 100%;
+    flex-grow: 0;
 `;
 
 const SideLeaderboard = styled(Leaderboard)`
@@ -60,6 +62,7 @@ const PreviewArea = styled.div``;
 
 function Document({ golf, leaderboards }: DocumentProps) {
     const [taskId, setTaskId] = useState(undefined);
+    const [resultSchem, setResultSchem] = useState(undefined);
     const commandBox = useRef<HTMLTextAreaElement>(null);
     const statusBox = useRef<HTMLTextAreaElement>(null);
 
@@ -86,6 +89,7 @@ function Document({ golf, leaderboards }: DocumentProps) {
                         break;
                     case 'failed':
                         statusBox.current!.value = `The schematics aren't the same!\n\n${pollResponse.log}`;
+                        setResultSchem(pollResponse.result);
                         await cleanupTask(taskId);
                         break;
                     case 'errored':
@@ -136,9 +140,11 @@ function Document({ golf, leaderboards }: DocumentProps) {
                     <h2>{golf.description}</h2>
                     <PreviewBox>
                         <PreviewArea>
+                            <Schematic schematic={golf.start_schematic} />
                             <p>Before</p>
                         </PreviewArea>
                         <PreviewArea>
+                            <Schematic schematic={golf.test_schematic} />
                             <p>After</p>
                         </PreviewArea>
                     </PreviewBox>
@@ -147,6 +153,12 @@ function Document({ golf, leaderboards }: DocumentProps) {
                     <FancyButton onClick={queueBroker}>Run</FancyButton>
                     <h3>Output</h3>
                     <BaseTextStyle disabled={true} ref={statusBox} />
+                    {resultSchem && (
+                        <PreviewArea>
+                            <Schematic schematic={resultSchem} />
+                            <p>Result</p>
+                        </PreviewArea>
+                    )}
                 </MainContent>
                 <SideLeaderboard>
                     {leaderboards.map(leaderboard => {
