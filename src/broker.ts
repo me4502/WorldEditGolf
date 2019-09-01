@@ -1,6 +1,6 @@
 type BrokerStatus = 'queued' | 'errored' | 'failed' | 'passed' | 'running';
 
-const BROKER_API_HOSTNAME = 'localhost:4653';
+const BROKER_API_HOSTNAME = process.env.BROKER_API_HOSTNAME || 'localhost:4653';
 
 interface QueueRequest {
   input: string;
