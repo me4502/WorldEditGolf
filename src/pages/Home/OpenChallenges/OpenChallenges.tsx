@@ -85,7 +85,7 @@ export const OpenChallenge: FunctionComponent<{ golfs: Golf[] }> = ({
     <>
         <ChallengeTitle>Open Challenges</ChallengeTitle>
         <Entries>
-            {golfs.filter((golf, i) => (
+            {golfs.map((golf, i) => (
                 <ChallengeEntry
                     schematic={golf.test_schematic}
                     description={golf.description}
