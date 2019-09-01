@@ -5,8 +5,15 @@ import { OpenChallenge } from '../src/pages/Home/OpenChallenges/OpenChallenges';
 import { useIsLoggedIn } from '../src/components/Auth';
 import Button from '../src/components/Input/Button';
 import router from 'next/router';
+import styled from 'styled-components';
 
 const isServerRendered = typeof window === 'undefined';
+
+const ChallengeButton = styled(Button)`
+    font-size: 22px;
+    margin: auto;
+    display: block;
+`;
 
 const Home = () => {
     const isAuthenticated = useIsLoggedIn();
@@ -16,12 +23,14 @@ const Home = () => {
     };
 
     return (
-        <Layout>
+        <Layout isHome={true}>
             <Head>
                 <title>WorldEdit Golf</title>
             </Head>
             {isAuthenticated && !isServerRendered && (
-                <Button onClick={onCreateChallenge}>New Challenge</Button>
+                <ChallengeButton onClick={onCreateChallenge}>
+                    New Challenge
+                </ChallengeButton>
             )}
             <OpenChallenge />
         </Layout>

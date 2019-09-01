@@ -25,7 +25,7 @@ const LayoutContainer = styled.div`
     flex-direction: column;
 `;
 
-const LayoutInner: FunctionComponent = ({ children, ...rest }) => {
+const LayoutInner: FunctionComponent<{ isHome?: boolean }> = ({ children, isHome, ...rest }) => {
     const isAuthenticated = useIsLoggedIn();
     const setToken = useSetToken();
     const onLogOut = () => setToken(undefined);
@@ -37,7 +37,7 @@ const LayoutInner: FunctionComponent = ({ children, ...rest }) => {
                 isAuthenticated={isAuthenticated}
             />
             <PageContainer>
-                <BrandHeader />
+                <BrandHeader isHomePage={isHome} />
                 {children}
             </PageContainer>
             <BrandFooter />
@@ -45,7 +45,7 @@ const LayoutInner: FunctionComponent = ({ children, ...rest }) => {
     );
 };
 
-export const Layout: FunctionComponent = ({ children, ...rest }) => {
+export const Layout: FunctionComponent<{ isHome?: boolean }> = ({ children, ...rest }) => {
     return (
         <AuthProvider>
             <LayoutInner {...rest}>{children}</LayoutInner>

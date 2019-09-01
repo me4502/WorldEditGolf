@@ -76,9 +76,13 @@ export const ChallengeEntry: FunctionComponent<ChallengeEntryProps> = ({
     );
 };
 
+const ChallengeTitle = styled.h2`
+    font-size: 24px;
+`;
+
 export const OpenChallenge: FunctionComponent = ({ children }) => (
     <>
-        <Header>Open WorldEdit Challenges</Header>
+        <ChallengeTitle>Open Challenges</ChallengeTitle>
         <Entries>
             <ChallengeEntry
                 title={'A great test to try!'}
