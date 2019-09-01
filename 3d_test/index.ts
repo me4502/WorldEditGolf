@@ -197,7 +197,6 @@ function buildSceneFromSchematic(tag: Tag, scene: Scene): [number, number, numbe
     }
 
     for (const [pos, blockName] of blockMap.entries()) {
-        console.log(pos, blockName);
         const [xStr, yStr, zStr] = pos.split(',');
         const [x, y, z] = [parseInt(xStr), parseInt(yStr), parseInt(zStr)];
 
