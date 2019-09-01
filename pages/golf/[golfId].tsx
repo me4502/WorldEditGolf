@@ -11,6 +11,7 @@ import {
 } from '../../src/components/Leaderboard/Leaderboard';
 import styled from 'styled-components';
 import { pollBroker, queueTask, clearTask } from '../../src/broker';
+import { useElementWidth } from '../../src/components/Resize';
 import PrimaryTheme from '../../src/components/style/theme';
 import { Schematic } from '../../src/components/Schematic';
 
@@ -71,6 +72,11 @@ function Document({ golf, leaderboards }: DocumentProps) {
         await clearTask(taskId);
         setTaskId(undefined);
     };
+
+    const contentRef = useRef<HTMLDivElement>();
+    const width = useElementWidth(contentRef);
+
+    console.error(width);
 
     useEffect(() => {
         const timeout = setInterval(async () => {
@@ -135,7 +141,7 @@ function Document({ golf, leaderboards }: DocumentProps) {
                 <title>{golf.title} | WorldEdit Golf</title>
             </Head>
             <PageColumns>
-                <MainContent>
+                <MainContent ref={contentRef}>
                     <h1>{golf.title}</h1>
                     <h2>{golf.description}</h2>
                     <PreviewBox>
