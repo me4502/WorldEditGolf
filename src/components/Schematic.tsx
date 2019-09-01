@@ -7,14 +7,14 @@ interface SchematicProps {
     size?: number;
 }
 
-const Container = styled.div`
+const Container = styled.div<{ size: number }>`
     display: flex;
     align-items: center;
     justify-content: center;
 
     canvas {
-        width: 0px;
-        height: 0px;
+        width: ${({ size }) => size}px;
+        height: ${({ size }) => size}px;
         border: solid 2px rgba(28, 28, 28, 0.3);
     }
 `;
@@ -25,7 +25,7 @@ export const Schematic: FunctionComponent<SchematicProps> = ({
     ...rest
 }) => {
     const ref = useRef<HTMLCanvasElement>();
-    const [ resize, setResize ] = useState<(size: number) => void>();
+    const [resize, setResize] = useState<(size: number) => void>();
 
     useEffect(() => {
         if (resize) {
@@ -35,14 +35,18 @@ export const Schematic: FunctionComponent<SchematicProps> = ({
 
     useEffect(() => {
         if (schematic && ref.current) {
-            const { destroy, resize: r } = renderSchematic(ref.current, schematic, size);
+            const { destroy, resize: r } = renderSchematic(
+                ref.current,
+                schematic,
+                size
+            );
             setResize(() => r);
             return destroy;
         }
     }, [schematic]);
 
     return (
-        <Container {...rest}>
+        <Container size={size} {...rest}>
             <canvas ref={ref} />
         </Container>
     );

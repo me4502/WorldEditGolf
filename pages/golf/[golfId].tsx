@@ -12,9 +12,9 @@ import {
 import styled from 'styled-components';
 import { pollBroker, queueTask, clearTask } from '../../src/broker';
 import { useElementWidth } from '../../src/components/Resize';
-import PrimaryTheme from '../../src/components/style/theme';
 import { Schematic } from '../../src/components/Schematic';
 import { useToken } from '../../src/components/Auth';
+import { Button } from '../../src/components/Input/Button';
 
 interface DocumentProps {
     golf: Golf;
@@ -42,17 +42,6 @@ const SideLeaderboard = styled(Leaderboard)`
     margin-left: 1rem;
 `;
 
-const FancyButton = styled.button`
-    background-color: ${PrimaryTheme.brandColor};
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-`;
-
 const BaseTextStyle = styled.textarea`
     width: 100%;
     resize: none;
@@ -62,6 +51,10 @@ const BaseTextStyle = styled.textarea`
 `;
 
 const PreviewArea = styled.div``;
+
+const ResultPreview = styled(PreviewArea)`
+    margin-top: 48px;
+`;
 
 function Document({ golf, leaderboards }: DocumentProps) {
     const [taskId, setTaskId] = useState(undefined);
@@ -142,6 +135,8 @@ function Document({ golf, leaderboards }: DocumentProps) {
         }
     };
 
+    const smallSize = width / 2.05;
+
     return (
         <Layout>
             <Head>
@@ -154,14 +149,14 @@ function Document({ golf, leaderboards }: DocumentProps) {
                     <PreviewBox>
                         <PreviewArea>
                             <Schematic
-                                size={width / 2.05}
+                                size={smallSize}
                                 schematic={golf.start_schematic}
                             />
                             <p>Before</p>
                         </PreviewArea>
                         <PreviewArea>
                             <Schematic
-                                size={width / 2.05}
+                                size={smallSize}
                                 schematic={golf.test_schematic}
                             />
                             <p>After</p>
@@ -169,17 +164,17 @@ function Document({ golf, leaderboards }: DocumentProps) {
                     </PreviewBox>
                     <h3>Commands</h3>
                     <BaseTextStyle ref={commandBox} />
-                    <FancyButton onClick={queueBroker}>Run</FancyButton>
+                    <Button onClick={queueBroker}>Run</Button>
                     <h3>Output</h3>
                     <BaseTextStyle disabled={true} ref={statusBox} />
                     {resultSchem && (
-                        <PreviewArea>
+                        <ResultPreview>
                             <Schematic
                                 size={Math.min(width, 500)}
                                 schematic={resultSchem}
                             />
                             <p>Result</p>
-                        </PreviewArea>
+                        </ResultPreview>
                     )}
                 </MainContent>
                 <SideLeaderboard>
