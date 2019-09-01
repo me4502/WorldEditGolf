@@ -25,7 +25,7 @@ function getTextureMaterial(tex: string): Material {
     if (cached) return cached;
 
     const needsColor = needsColorBlocks.has(tex);
-    const texture = loader.load(`/textures/${tex}.png`);
+    const texture = loader.load(`/static/textures/${tex}.png`);
     texture.magFilter = NearestFilter;
     //texture.minFilter = NearestFilter;
     const mat = new MeshPhongMaterial({
