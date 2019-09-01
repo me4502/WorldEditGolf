@@ -183,6 +183,7 @@ const Submit = () => {
                 filter={filter}
                 name="Test Schematic"
             />
+            {test && <Schematic schematic={test} />}
             <Button onClick={submitGolf} disabled={!isValid}>
                 Upload Golf
             </Button>

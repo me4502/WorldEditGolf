@@ -6,7 +6,14 @@ interface SchematicProps {
     schematic: string;
 }
 
-const Container = styled.div``;
+const Container = styled.div`
+    display: flex;
+    align-items: center;
+
+    canvas {
+        border: solid 2px rgba(28, 28, 28, 0.3);
+    }
+`;
 
 export const Schematic: FunctionComponent<SchematicProps> = ({
     schematic,
