@@ -269,11 +269,11 @@ export async function addUser(user: User): Promise<void> {
         Key: {
             user_id: `${user.user_id}`
         },
-        UpdateExpression: `set avatar=:avatar, username=:username, name=:name`,
+        UpdateExpression: `set avatar=:avatar, username=:username, fullname=:fullname`,
         ExpressionAttributeValues: {
             ':avatar': user.avatar,
             ':username': user.username,
-            ':name': user.name
+            ':fullname': user.fullname
         }
     };
 
@@ -294,7 +294,7 @@ export async function getUser(userId: string): Promise<User> {
     if (process.env.NODE_ENV !== 'production') {
         return Promise.resolve({
             user_id: userId,
-            name: 'Test Testerson',
+            fullname: 'Test Testerson',
             username: 'test2',
             avatar:
                 'https://enginehub.org/static/f424a77f87272f1081deb39d11e08bf4/4da7c/worldedit-icon.png'

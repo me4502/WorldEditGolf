@@ -19,7 +19,7 @@ import { Button } from '../../src/components/Input/Button';
 interface DocumentProps {
     golf: Golf;
     leaderboards: GolfLeaderboard[];
-    userMap: Map<string, User>;
+    userMap: {[key: string]: User};
 }
 
 const PageColumns = styled.div`
@@ -181,7 +181,7 @@ function Document({ golf, leaderboards, userMap }: DocumentProps) {
                 <SideLeaderboard>
                     {leaderboards.map(leaderboard => {
                         const date = new Date(leaderboard.submitted_time);
-                        const user = userMap.get(leaderboard.user_id);
+                        const user = userMap[leaderboard.user_id];
                         return (
                             <LeaderboardEntry
                                 key={`${golf.golf_id}-${leaderboard.user_id}`}
@@ -194,8 +194,10 @@ function Document({ golf, leaderboards, userMap }: DocumentProps) {
                                     ' ' +
                                     date.toDateString()
                                 }
-                                githubId={leaderboard.user_id}
-                                name={user ? user.name : leaderboard.user_id}
+                                githubId={user ? user.username : leaderboard.user_id}
+                                name={
+                                    user ? user.fullname : leaderboard.user_id
+                                }
                                 avatar={user ? user.avatar : ''}
                             />
                         );
@@ -222,15 +224,18 @@ Document.getInitialProps = async ({ query, res }: NextPageContext) => {
             Router.push('/');
         }
     }
-    let userMap = new Map();
+    let userMap = {};
 
     if (leaderboards) {
-        const sortedLeaderboards = leaderboards.sort((a, b) => {   
+        const sortedLeaderboards = leaderboards.sort((a, b) => {
             return a.score - b.score || a.submitted_time - b.submitted_time;
         });
         const leaderUsers = sortedLeaderboards.map(lead => lead.user_id);
         const users = await Promise.all(leaderUsers.map(user => getUser(user)));
-        userMap = new Map(users.map(user => [user.user_id, user]));
+        userMap = users.reduce((a, b) => {
+            a[b.user_id] = b;
+            return a;
+        }, {});
     }
     return { golf, leaderboards, userMap };
 };

@@ -80,7 +80,7 @@ export default async function handle(
         await addUser({
             user_id: github_id,
             avatar: avatar_url,
-            name,
+            fullname: name,
             username: login
         });
 
