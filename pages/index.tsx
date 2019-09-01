@@ -4,6 +4,7 @@ import { Layout } from '../src/containers/Layout/Layout';
 import { OpenChallenge } from '../src/pages/Home/OpenChallenges/OpenChallenges';
 import { useIsLoggedIn } from '../src/components/Auth';
 import Button from '../src/components/Input/Button';
+import { getAllGolfs } from '../src/dynamoDb';
 import router from 'next/router';
 import styled from 'styled-components';
 
@@ -15,7 +16,7 @@ const ChallengeButton = styled(Button)`
     display: block;
 `;
 
-const Home = () => {
+const Home = ({ golfs }) => {
     const isAuthenticated = useIsLoggedIn();
 
     const onCreateChallenge = () => {
@@ -32,13 +33,18 @@ const Home = () => {
                     New Challenge
                 </ChallengeButton>
             )}
-            <OpenChallenge />
+            <OpenChallenge golfs={golfs} />
         </Layout>
     );
 };
 
-Home.getInitialProps = () => {
-    return {};
+Home.getInitialProps = async () => {
+    try {
+        const golfs = await getAllGolfs();
+        return { golfs };
+    } catch (e) {
+        return { error: e, golfs: [] };
+    }
 };
 
 export default Home;

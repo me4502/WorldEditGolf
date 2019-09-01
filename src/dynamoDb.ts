@@ -179,7 +179,7 @@ export async function getAllGolfs(): Promise<Golf[]> {
     }
 
     const queryParams: AWS.DynamoDB.DocumentClient.QueryInput = {
-        TableName: LeaderboardTableName
+        TableName: GolfsTableName
     };
 
     return new Promise((resolve, reject) => {

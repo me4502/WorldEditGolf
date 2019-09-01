@@ -4,6 +4,7 @@ import { Header } from '../../../components/Header/Header';
 import styled from 'styled-components';
 import { Schematic } from '../../../components/Schematic';
 import { NavLink } from '../../../components/NavLink/NavLink';
+import { Golf } from '../../../types/database';
 
 const Entries = styled.div`
     > div:not(:last) {
@@ -15,7 +16,6 @@ export interface ChallengeEntryProps {
     schematic: string;
     title: string;
     description: string;
-    author: string;
     golfId: string;
 }
 
@@ -58,7 +58,6 @@ export const ChallengeEntry: FunctionComponent<ChallengeEntryProps> = ({
     schematic,
     title,
     description,
-    author,
     golfId,
     ...rest
 }) => {
@@ -69,7 +68,6 @@ export const ChallengeEntry: FunctionComponent<ChallengeEntryProps> = ({
                 <Link href={`/golf/${golfId}`}>
                     <h3>{title}</h3>
                 </Link>
-                <h4>{author}</h4>
                 <p>{description}</p>
             </InfoContainer>
         </ChallengeEntryContainer>
@@ -80,32 +78,22 @@ const ChallengeTitle = styled.h2`
     font-size: 24px;
 `;
 
-export const OpenChallenge: FunctionComponent = ({ children }) => (
+export const OpenChallenge: FunctionComponent<{ golfs: Golf[] }> = ({
+    children,
+    golfs
+}) => (
     <>
         <ChallengeTitle>Open Challenges</ChallengeTitle>
         <Entries>
-            <ChallengeEntry
-                title={'A great test to try!'}
-                author={'Bennett Hardwick'}
-                description={
-                    'Does anything think they can defeat this amazing golf that I created? Good luck!'
-                }
-                golfId={'wow'}
-                schematic={
-                    'H4sIAAAAAAAAAF2O3UrDQBCFj1lskrXFd/AxBL0QC15YLFSsP4iM6SQZTDeQHdDe9kV9FJ2tQsVzc5gzw3fGo1xULa9JpXLwc+pYlWf0AcB55L+Bw/FaAlcD1XoatQ9s+wOHyT4lGSzLHE72WTNQjC+vXV+9PcXQv2/OauoiPyPJIb/jIUofEivD6JpDoy0yj2LGSitSciiX05u6jqz3X6Y/88O/+XEHNcwVS9MqshzlRWq+NI5tCuxqTDhcyioVlRjfSsfToKLC0aeLI4x+eOlDa/g0Pzff4hs2pFkvKwEAAA=='
-                }
-            />
-            <ChallengeEntry
-                title={'A great test to try!'}
-                golfId={'test'}
-                author={'Bennett Hardwick'}
-                description={
-                    'Does anything think they can defeat this amazing golf that I created? Good luck!'
-                }
-                schematic={
-                    'H4sIAAAAAAAAAF2O3UrDQBCFj1lskrXFd/AxBL0QC15YLFSsP4iM6SQZTDeQHdDe9kV9FJ2tQsVzc5gzw3fGo1xULa9JpXLwc+pYlWf0AcB55L+Bw/FaAlcD1XoatQ9s+wOHyT4lGSzLHE72WTNQjC+vXV+9PcXQv2/OauoiPyPJIb/jIUofEivD6JpDoy0yj2LGSitSciiX05u6jqz3X6Y/88O/+XEHNcwVS9MqshzlRWq+NI5tCuxqTDhcyioVlRjfSsfToKLC0aeLI4x+eOlDa/g0Pzff4hs2pFkvKwEAAA=='
-                }
-            />
+            {golfs.filter((golf, i) => (
+                <ChallengeEntry
+                    schematic={golf.test_schematic}
+                    description={golf.description}
+                    golfId={golf.golf_id}
+                    title={golf.title}
+                    key={i}
+                />
+            ))}
             {children}
         </Entries>
     </>
