@@ -56,9 +56,7 @@ const BaseTextStyle = styled.textarea`
     line-height: 1.5;
 `;
 
-const CommandBox = styled(BaseTextStyle)``;
-
-const StatusBox = styled(BaseTextStyle)``;
+const PreviewArea = styled.div``;
 
 function Document({ golf, leaderboards }: DocumentProps) {
     const [taskId, setTaskId] = useState(undefined);
@@ -137,13 +135,18 @@ function Document({ golf, leaderboards }: DocumentProps) {
                     <h1>{golf.title}</h1>
                     <h2>{golf.description}</h2>
                     <PreviewBox>
-                        <p>Before</p> <p>After</p>
+                        <PreviewArea>
+                            <p>Before</p>
+                        </PreviewArea>
+                        <PreviewArea>
+                            <p>After</p>
+                        </PreviewArea>
                     </PreviewBox>
                     <h3>Commands</h3>
-                    <CommandBox ref={commandBox} />
+                    <BaseTextStyle ref={commandBox} />
                     <FancyButton onClick={queueBroker}>Run</FancyButton>
                     <h3>Output</h3>
-                    <StatusBox disabled={true} ref={statusBox} />
+                    <BaseTextStyle disabled={true} ref={statusBox} />
                 </MainContent>
                 <SideLeaderboard>
                     {leaderboards.map(leaderboard => {
