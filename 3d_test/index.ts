@@ -130,10 +130,6 @@ const blockNameMap = {
     "tnt": basicBlockGen("tnt_side")
 };
 
-//const testSchematic = "H4sIAAAAAAAAAF1OwWrCQBCdZGliVjz33i/wLOhBKvRQaaFQq1JkXCfJYNxAdqDttT/aT2lntVTpXB7z3sx7z0Lx5Go6oLAzYB+xIRGa4zsAGAv5L2FgcGBPrsNSRsidqomB6zPncE/rLQuF8fBV1dTAzVmtOgxhs21at18H3759jEtsAsVDjYH8mbrArY9/KWT35CupIbXQm5PgDgUNFIvZQ1kGkpdvnYt9+W9fHU3V5o64qiU26d+qxV9GtsmhmMYukdbbXnxIkiQtYHDkZ15YmII9OV0teBf79CE7RcTSGvqlOFH8hB/BmInqRgEAAA==";
-//const testSchematic = "H4sIAAAAAAAAAF2O3UrDQBCFj1lskrXFd/AxBL0QC15YLFSsP4iM6SQZTDeQHdDe9kV9FJ2tQsVzc5gzw3fGo1xULa9JpXLwc+pYlWf0AcB55L+Bw/FaAlcD1XoatQ9s+wOHyT4lGSzLHE72WTNQjC+vXV+9PcXQv2/OauoiPyPJIb/jIUofEivD6JpDoy0yj2LGSitSciiX05u6jqz3X6Y/88O/+XEHNcwVS9MqshzlRWq+NI5tCuxqTDhcyioVlRjfSsfToKLC0aeLI4x+eOlDa/g0Pzff4hs2pFkvKwEAAA==";
-const testSchematic = "H4sIAAAAAAAAAO3aQW7TQBTG8bENLQkgNogNV+AELBGVWFAVCdQCm8okk8YidVAyC27BQbgAEifgEGyQOERXxWnjetygLur3rBnl/y2aOol+erKenzIeD83g7WhqT3NXjDIzfJPPrHN2P/9qjLkzNLvrNzLz5LQo7WiRT9zzhR0fj+blaGGdrb6WZeZx82GxmJfHn2bz0efqozQzD5uP8mJhVt83T5v3vsxnxXJagXk5tsviAkyqr+we2sWymJerw9TsvLbliZuaR0Nzb9+6fJy7PDODo72DyWRp3fvz8/Pv3vGH6vivd/yxOj4zFfPKFidTZ57tmsGLVYkvK8eY3z+MTpJWUFFRUaXUmBLTeUVFRY1JVUmSaBSLioqKioqKiooal5p6QUVFRUVFRUVF3U61zgUqWGvi/UFFRUUNW20NwsBrRUVFRdWchOtBKKfWP11la0VFRUXVUf1BKKiuyLpeVFRU1NBVbxAGvuZGRUVFVVObQRj4Ez+oqKioWqo3CIOvFRUVFVVF9QehQq0K+9yoqKiowmrqReUpRVRUVNTQVX8Qajybo3CnFBUVFVVHrSOp1rvcqKhJkl0mve3fy39iPgOo4au1LbwPU3nStcaqdpsC/hzYUDuwN6kSM+s/asf0WavKeRXvAZ1+3U61mbHy+zDCtfagdmzXpl831O5BRe2nX3WurcBVbw5K7sOsXdFa+1A7ttRVZ22oAkFF7adfda6tsNV6DkYxtfv5TSjSWXH/ykCNSFXoV51rK3A1qpX8tfsuMj3Q3/0sVNRYVIVrS2cOiKlqa+6Y9oxae5xCPXBNFQgqaj/9qnNtha3qrbnl7z72oUp2VksVCCpqP/2qc20Friruw9TVxqTevqmu7cVtqN2DitpPv+pcW6GrOiv5plpUyWfJNtQO7E3q7dkb1Y7ps1aV8yreAzr9uq2qzkq+CSqq/MyK7QygxqAKr7lTP6ioqKiBq0l7FkqpOrWioqKi6qj+LJTfhxH+/YqKioqqo7Yip/rFoqKiooau+hFUvWJRUVFRg1c9WVJtikVFRUUNXV2Z65uPsvP1qlhUVFTUwNV6C0bh2ce6WFRUVNSw1ashqPEUuMKaGxUVFVVeVZ2EicKaGxUVFVVcTb2goqKiouqoKSoqKmrgM6sdVFRUVFRUVFTU7VOVolMqKioqakyJ6byioqLGpBJCCFFJau4eFWM3NYcD8+BdMbN7pStcYZfD1af3zc7BZLK0rvo/S379/FO9Hlev38w//swLQvbeAAA=";
-
 function parseNbt(nbt: string): Tag {
     const buff = Buffer.from(nbt, 'base64');
     const deflated = Buffer.from(unzip(buff));
@@ -243,7 +239,7 @@ export function renderSchematic(canvas: HTMLCanvasElement, schematic: string): (
         isDragging = false;
     };
 
-    const rootTag = parseNbt(testSchematic);
+    const rootTag = parseNbt(schematic);
     const [worldWidth, worldHeight, worldLength] = buildSceneFromSchematic((rootTag as any).Schematic[0], scene);
     const cameraOffset = Math.max(worldWidth, worldLength) / 2 + 1;
     const camera = new OrthographicCamera(-cameraOffset, cameraOffset, cameraOffset, -cameraOffset, 0.01, 10000);
