@@ -98,20 +98,22 @@ export function createTable() {
     }
 }
 
+const TEST_GOLF = {
+    golf_id: 'test',
+    start_schematic:
+        'H4sIAAAAAAAAAF1OXUvDQBCc3GHTnIr/wZ8h2Aex4INFQbF+IGVNN8lieoHcgvrqH/Wn6J4KFedl2JndmQ2oruqON6RSe4RL6lmVF/QKwAeUv4LHwUYi1yM1epR0iGy+89jfqiSjaYXH4VZrR0pp9dQP9fNDisPL23FDfeJHZHiUNzwmGWK+c5icc2y1gwuYLlhpTUoe1XJ+0TSJ9fbT8Ge++zfff4dazBlL2ylcieokN59ajjnTbBdF4Rx2lrLORRX2rqXneVRR4RTyxi4mP3n5Q2v4MJ4Zv+MLMXi6PSsBAAA=',
+    test_schematic:
+        'H4sIAAAAAAAAA11P20rEQAw9ncHtdrx8hJ8h6IO44IOLguJ6QSS2aRvsTqETUF/9UT9FM6ywYiAk53BykgRU13XPa1KpS1Snw1i/npESgLkliqJwDrNzlq5X5PaCY6c9XMB8yUqNiT2q1eKybRPr3bfFH3z/Dz9kU+xitoHWexN8WT2x+hlQXtHAquyxv5bI9UStHpFM+RaPwy3XTZTS80s++DHF8e3juKUh8VP29zjYChPFxjhnbPg1X9J7VlXYu5GBF1FFhVPYjJa3PCUZY97osLOSJr+LH/Ay+vAqAQAA',
+    isHidden: false,
+    title: 'Test Golf',
+    description: 'A test golf',
+    created_at: Date.now(),
+    user_id: 'test'
+};
+
 export async function getGolf(golfId: string): Promise<Golf> {
     if (process.env.NODE_ENV !== 'production' && golfId === 'test') {
-        return Promise.resolve({
-            golf_id: 'test',
-            start_schematic:
-                'H4sIAAAAAAAAAF1OXUvDQBCc3GHTnIr/wZ8h2Aex4INFQbF+IGVNN8lieoHcgvrqH/Wn6J4KFedl2JndmQ2oruqON6RSe4RL6lmVF/QKwAeUv4LHwUYi1yM1epR0iGy+89jfqiSjaYXH4VZrR0pp9dQP9fNDisPL23FDfeJHZHiUNzwmGWK+c5icc2y1gwuYLlhpTUoe1XJ+0TSJ9fbT8Ge++zfff4dazBlL2ylcieokN59ajjnTbBdF4Rx2lrLORRX2rqXneVRR4RTyxi4mP3n5Q2v4MJ4Zv+MLMXi6PSsBAAA=',
-            test_schematic:
-                'H4sIAAAAAAAAA11P20rEQAw9ncHtdrx8hJ8h6IO44IOLguJ6QSS2aRvsTqETUF/9UT9FM6ywYiAk53BykgRU13XPa1KpS1Snw1i/npESgLkliqJwDrNzlq5X5PaCY6c9XMB8yUqNiT2q1eKybRPr3bfFH3z/Dz9kU+xitoHWexN8WT2x+hlQXtHAquyxv5bI9UStHpFM+RaPwy3XTZTS80s++DHF8e3juKUh8VP29zjYChPFxjhnbPg1X9J7VlXYu5GBF1FFhVPYjJa3PCUZY97osLOSJr+LH/Ay+vAqAQAA',
-            isHidden: false,
-            title: 'Test Golf',
-            description: 'A test golf',
-            created_at: Date.now(),
-            user_id: 'test'
-        });
+        return Promise.resolve(TEST_GOLF);
     }
     const readParams: AWS.DynamoDB.DocumentClient.GetItemInput = {
         TableName: GolfsTableName,
@@ -166,6 +168,26 @@ export async function getLeaderboard(
                 reject(err);
             } else {
                 resolve(data.Items as GolfLeaderboard[]);
+            }
+        });
+    });
+}
+
+export async function getAllGolfs(): Promise<Golf[]> {
+    if (process.env.NODE_ENV !== 'production') {
+        return Promise.resolve([TEST_GOLF, TEST_GOLF, TEST_GOLF]);
+    }
+
+    const queryParams: AWS.DynamoDB.DocumentClient.QueryInput = {
+        TableName: LeaderboardTableName
+    };
+
+    return new Promise((resolve, reject) => {
+        docClient.query(queryParams, (err, data) => {
+            if (err || !data || !data.Items) {
+                reject(err);
+            } else {
+                resolve(data.Items as Golf[]);
             }
         });
     });
