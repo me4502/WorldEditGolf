@@ -107,9 +107,9 @@ const blockNameMap = {
     "cauldron": sideBlockGen("cauldron_top", "cauldron_bottom", "cauldron_side"),
     "composter": sideBlockGen("composter_top", "composter_bottom", "composter_side"),
     "crafting_table": multiBlockGen("crafting_table_top", "oak_planks", "crafting_table_side", "crafting_table_side", "crafting_table_side", "crafting_table_front"),
-    "dispenser": basicBlockGen("dispenser_front"),
-    "dried_kelp": basicBlockGen("dried_kelp_top"),
-    "dropper": basicBlockGen("dropper_front"),
+    "dispenser": multiBlockGen("furnace_top", "furnace_top", "furnace_top", "furnace_top", "furnace_top", "dispenser_front"),
+    "dried_kelp": sideBlockGen("dried_kelp_top", "dried_kelp_bottom", "dried_kelp_side"),
+    "dropper": multiBlockGen("furnace_top", "furnace_top", "furnace_top", "furnace_top", "furnace_top", "dropper_front"),
     "fletching_table": basicBlockGen("fletching_table_front"),
     "frosted_ice": basicBlockGen("frosted_ice_0"),
     "furnace": basicBlockGen("furnace_front"),
@@ -128,7 +128,7 @@ const blockNameMap = {
     "smoker": basicBlockGen("smoker_front"),
     "smooth_stone_slab": basicBlockGen("smooth_stone_slab_side"),
     "stone_slab": basicBlockGen("stone_slab_side"),
-    "tnt": basicBlockGen("tnt_side")
+    "tnt": sideBlockGen("tnt_top", "tnt_bottom", "tnt_side")
 };
 
 function parseNbt(nbt: string): Tag {
