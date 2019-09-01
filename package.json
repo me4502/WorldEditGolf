@@ -25,7 +25,12 @@
     "react-helmet": "^5.2.1",
     "serverless-nextjs-plugin": "^2.3.4",
     "serverless-offline": "^5.10.1",
-    "styled-components": "^4.3.2"
+    "styled-components": "^4.3.2",
+    "@types/gzip-js": "^0.3.1",
+    "gzip-js": "^0.3.2",
+    "nbt-ts": "^1.2.3",
+    "three": "^0.108.0",
+    "zlibt": "0.0.5"
   },
   "devDependencies": {
     "@storybook/addon-actions": "^5.1.11",
