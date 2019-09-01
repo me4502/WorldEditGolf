@@ -326,7 +326,7 @@ export function renderSchematic(canvas: HTMLCanvasElement, schematic: string, si
 
     return {
         resize(size: number): void {
-            renderer.setSize(size);
+            renderer.setSize(size, size);
         },
         destroy() {
             hasDestroyed = true;
