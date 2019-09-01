@@ -4,6 +4,7 @@ import React, {
     useState,
     useEffect
 } from 'react';
+import router from 'next/router';
 
 const getToken = () =>
     typeof window !== 'undefined' ? window.localStorage.getItem('token') : ' ';
@@ -33,8 +34,15 @@ export const AuthProvider: FunctionComponent = ({ children }) => {
 export const useSetToken: () => (value?: string) => void = () => {
     const { setToken } = useContext(AuthContext);
 
-    const set = (value: string) => {
-        window.localStorage.setItem('token', value);
+    const set = (value?: string) => {
+        console.error(value);
+
+        if (value) {
+            window.localStorage.setItem('token', value);
+        } else {
+            window.localStorage.removeItem('token');
+        }
+
         setToken(value);
     };
 
@@ -71,4 +79,13 @@ export const useAuthenticatedFetch: () => FetchFunction = () => {
 export const useIsLoggedIn: () => boolean = () => {
     const { token } = useContext(AuthContext);
     return !!token;
+};
+
+export const useAuthenticatedPage = () => {
+    const isLoggedIn = useIsLoggedIn();
+    useEffect(() => {
+        if (!isLoggedIn) {
+            router.push('/');
+        }
+    }, [useIsLoggedIn]);
 };

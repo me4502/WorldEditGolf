@@ -10,6 +10,7 @@ const NavContainer = styled.nav`
 `;
 const NavInner = styled.div`
   max-width: 1000px;
+  display: flex;
   width: 100%;
   margin: auto;
   padding: 0 2rem;

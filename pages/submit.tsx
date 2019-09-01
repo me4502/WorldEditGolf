@@ -11,6 +11,7 @@ import { useAuthenticatedFetch } from '../src/components/Auth';
 import { Loading } from '../src/components/Loading';
 import { Schematic } from '../src/components/Schematic';
 import { useElementWidth } from '../src/components/Resize';
+import { useAuthenticatedPage } from '../src/components/Auth';
 
 const Container = styled.div`
     position: relative;
@@ -113,6 +114,8 @@ const Submit = () => {
 
     const containerRef = useRef<HTMLDivElement>();
     const width = useElementWidth(containerRef);
+
+    useAuthenticatedPage();
 
     const submitGolf = () => {
         if (!isValid || submitting) {
