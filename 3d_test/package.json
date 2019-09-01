@@ -1,0 +1,22 @@
+{
+  "name": "3d_test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "browserslist": ["since 2018"],
+  "dependencies": {
+    "@types/gzip-js": "^0.3.1",
+    "gzip-js": "^0.3.2",
+    "nbt-ts": "^1.2.3",
+    "three": "^0.108.0",
+    "zlibt": "0.0.5"
+  },
+  "devDependencies": {
+    "typescript": "^3.6.2"
+  }
+}

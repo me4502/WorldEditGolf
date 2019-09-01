@@ -1,0 +1,60 @@
+{
+  "_from": "nbt-ts",
+  "_id": "nbt-ts@1.2.3",
+  "_inBundle": false,
+  "_integrity": "sha512-jjHojPOKiCCJ/XDA0PPHV18y1WWew7PJ4aivGNac5hkeXYdeAGTgojTGWP3eVX207Lvg6qmYUFkFIWrQAAuYkg==",
+  "_location": "/nbt-ts",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "nbt-ts",
+    "name": "nbt-ts",
+    "escapedName": "nbt-ts",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/nbt-ts/-/nbt-ts-1.2.3.tgz",
+  "_shasum": "24fc32a32598cfad8202567ccf37b8e6cc218c83",
+  "_spec": "nbt-ts",
+  "_where": "C:\\Users\\mrfis\\Documents\\Projects\\cpdt\\WorldEditGolf\\3d_test",
+  "author": {
+    "name": "Janis Pritzkau",
+    "email": "janispritzkau@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/janispritzkau/nbt-ts/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "An easy to use encoder and decoder for the NBT format",
+  "devDependencies": {
+    "@types/node": "^12.7.2",
+    "typescript": "^3.5.3"
+  },
+  "homepage": "https://github.com/janispritzkau/nbt-ts#readme",
+  "keywords": [
+    "nbt",
+    "minecraft",
+    "typescript",
+    "snbt"
+  ],
+  "license": "MIT",
+  "main": "lib",
+  "name": "nbt-ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/janispritzkau/nbt-ts.git"
+  },
+  "scripts": {
+    "prepare": "tsc && npm run test",
+    "test": "node test"
+  },
+  "types": "lib",
+  "version": "1.2.3"
+}
