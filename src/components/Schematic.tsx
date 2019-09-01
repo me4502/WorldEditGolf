@@ -4,6 +4,7 @@ import { renderSchematic } from '../../3d_test';
 
 interface SchematicProps {
     schematic: string;
+    size?: number;
 }
 
 const Container = styled.div`
@@ -18,13 +19,14 @@ const Container = styled.div`
 
 export const Schematic: FunctionComponent<SchematicProps> = ({
     schematic,
+    size = 500,
     ...rest
 }) => {
     const ref = useRef<HTMLCanvasElement>();
 
     useEffect(() => {
         if (schematic && ref.current) {
-            return renderSchematic(ref.current, schematic);
+            return renderSchematic(ref.current, schematic, size);
         }
     }, [schematic]);
 
