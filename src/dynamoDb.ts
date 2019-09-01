@@ -178,11 +178,11 @@ export async function getAllGolfs(): Promise<Golf[]> {
         return Promise.resolve([TEST_GOLF, TEST_GOLF, TEST_GOLF]);
     }
 
-    const queryParams: AWS.DynamoDB.DocumentClient.QueryInput = {
+    const queryParams: AWS.DynamoDB.DocumentClient.ScanInput = {
         TableName: GolfsTableName
     };
 
-    return new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
         docClient.scan(queryParams, (err, data) => {
             if (err || !data || !data.Items) {
                 reject(err);
