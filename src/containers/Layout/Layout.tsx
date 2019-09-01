@@ -8,7 +8,10 @@ import {rem} from "../../components/style/rem";
 import { BrandFooter } from "../BrandFooter/BrandFooter";
 
 const PageContainer = styled.div`
-  padding: 0 ${rem(152)};
+  padding: 0 2rem;
+  max-width: 1000px;
+  width: 100%;
+  margin: auto;
   flex: 1;
 `;
 

@@ -3,10 +3,10 @@ import React, {
   FunctionComponent,
   useState,
   useEffect
-} from 'react';
+} from "react";
 
 const getToken = () =>
-  typeof window !== 'undefined' ? window.localStorage.getItem('token') : ' ';
+  typeof window !== "undefined" ? window.localStorage.getItem("token") : " ";
 
 const AuthContext = React.createContext<{
   token?: string;
@@ -34,11 +34,38 @@ export const useSetToken: () => (value?: string) => void = () => {
   const { setToken } = useContext(AuthContext);
 
   const set = (value: string) => {
-    window.localStorage.setItem('token', value);
+    window.localStorage.setItem("token", value);
     setToken(value);
   };
 
   return set;
+};
+
+export const useToken: () => string | undefined = () => {
+  const { token } = useContext(AuthContext);
+  return token;
+};
+
+type FetchFunction = typeof fetch;
+
+export const useAuthenticatedFetch: () => FetchFunction = () => {
+  const token = useToken();
+
+  return (input: RequestInfo, init?: RequestInit) => {
+    if (!token) {
+      return Promise.reject("Cannot find auth token!");
+    }
+
+    init = {
+      ...init,
+      headers: {
+        ...init.headers,
+        authorization: `token ${token}`
+      }
+    };
+
+    return fetch(input, init);
+  };
 };
 
 export const useIsLoggedIn: () => boolean = () => {

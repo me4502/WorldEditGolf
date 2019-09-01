@@ -1,11 +1,22 @@
-import {styled} from "../style/styled";
-import {rem} from "../style/rem";
+import { styled } from "../style/styled";
+import { rem } from "../style/rem";
+import { FunctionComponent } from "react";
 
-export const Nav = styled.nav`
-   background-color: ${props => props.theme.brandColor};
-   color: ${props => props.theme.primaryDarkColor};
-   min-height: ${rem('50px')};
-   margin: 0;
-   border: 0;
-   border-radius: 0;
+const NavContainer = styled.nav`
+  width: 100%;
+  background-color: ${props => props.theme.brandColor};
+  color: ${props => props.theme.primaryDarkColor};
+  min-height: ${rem("50px")};
 `;
+const NavInner = styled.div`
+  max-width: 1000px;
+  width: 100%;
+  margin: auto;
+  padding: 0 2rem;
+`;
+
+export const Nav: FunctionComponent = ({ children, ...rest }) => (
+  <NavContainer {...rest}>
+    <NavInner>{children}</NavInner>
+  </NavContainer>
+);
