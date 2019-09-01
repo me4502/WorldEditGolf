@@ -331,7 +331,3 @@ export function renderSchematic(canvas: HTMLCanvasElement, schematic: string): (
         document.body.removeEventListener('mouseup', mouseupCallback);
     };
 }
-
-const canvas = document.createElement('canvas');
-document.body.appendChild(canvas);
-renderSchematic(canvas, testSchematic);
