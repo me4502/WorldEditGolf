@@ -32,6 +32,7 @@ function getTextureMaterial(tex: string): Material {
         map: texture,
         color: needsColor ? new Color(0x91bd59) : new Color(),
         shininess: 0,
+        transparent: true,
     });
     materialCache.set(tex, mat);
     return mat;
