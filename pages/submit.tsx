@@ -51,6 +51,7 @@ const InfoContainer = styled.div<{ color: string }>`
     border: ${props => props.color} 2px solid;
     border-radius: 3px;
     background: ${props => props.color}66;
+    padding: 6px 10px;
 `;
 
 const Submit = () => {
