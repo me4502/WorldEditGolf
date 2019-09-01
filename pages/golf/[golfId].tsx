@@ -26,6 +26,7 @@ const PageColumns = styled.div`
 
 const MainContent = styled.div`
     flex: 60%;
+    overflow: hidden;
 `;
 
 const PreviewBox = styled.div`
@@ -146,11 +147,11 @@ function Document({ golf, leaderboards }: DocumentProps) {
                     <h2>{golf.description}</h2>
                     <PreviewBox>
                         <PreviewArea>
-                            <Schematic schematic={golf.start_schematic} />
+                            <Schematic size={width / 2.05} schematic={golf.start_schematic} />
                             <p>Before</p>
                         </PreviewArea>
                         <PreviewArea>
-                            <Schematic schematic={golf.test_schematic} />
+                            <Schematic size={width/ 2.05} schematic={golf.test_schematic} />
                             <p>After</p>
                         </PreviewArea>
                     </PreviewBox>
@@ -161,7 +162,7 @@ function Document({ golf, leaderboards }: DocumentProps) {
                     <BaseTextStyle disabled={true} ref={statusBox} />
                     {resultSchem && (
                         <PreviewArea>
-                            <Schematic schematic={resultSchem} />
+                            <Schematic size={Math.min(width, 500)} schematic={resultSchem} />
                             <p>Result</p>
                         </PreviewArea>
                     )}

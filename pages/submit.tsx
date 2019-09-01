@@ -1,4 +1,4 @@
-import React, { useEffect, ReactNode } from 'react';
+import React, { useEffect, ReactNode, useRef } from 'react';
 import { Layout } from '../src/containers/Layout/Layout';
 import Head from 'next/head';
 import { useState } from 'react';
@@ -10,6 +10,7 @@ import Input from '../src/components/Input/Input';
 import { useAuthenticatedFetch } from '../src/components/Auth';
 import { Loading } from '../src/components/Loading';
 import { Schematic } from '../src/components/Schematic';
+import { useElementWidth } from '../src/components/Resize';
 
 const Container = styled.div`
     position: relative;
@@ -110,6 +111,9 @@ const Submit = () => {
 
     const fetch = useAuthenticatedFetch();
 
+    const containerRef = useRef<HTMLDivElement>();
+    const width = useElementWidth(containerRef);
+
     const submitGolf = () => {
         if (!isValid || submitting) {
             return;
@@ -152,7 +156,7 @@ const Submit = () => {
     };
 
     return (
-        <Container>
+        <Container ref={containerRef}>
             {submitting && submitting.type === 'loading' && (
                 <LoadingContainer>
                     <Loading />
@@ -176,7 +180,9 @@ const Submit = () => {
                 filter={filter}
                 name="Start Schematic"
             />
-            {start && <Schematic schematic={start} />}
+            {start && (
+                <Schematic size={Math.min(width, 500)} schematic={start} />
+            )}
             <FileSelector
                 disabled={!!loading}
                 onChange={setLoadingFile('test')}
@@ -184,7 +190,7 @@ const Submit = () => {
                 filter={filter}
                 name="Test Schematic"
             />
-            {test && <Schematic schematic={test} />}
+            {test && <Schematic size={Math.min(width, 500)} schematic={test} />}
             <Button onClick={submitGolf} disabled={!isValid}>
                 Upload Golf
             </Button>
