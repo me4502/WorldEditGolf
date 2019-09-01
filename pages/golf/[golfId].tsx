@@ -14,6 +14,7 @@ import { pollBroker, queueTask, clearTask } from '../../src/broker';
 import { useElementWidth } from '../../src/components/Resize';
 import PrimaryTheme from '../../src/components/style/theme';
 import { Schematic } from '../../src/components/Schematic';
+import { useToken } from '../../src/components/Auth';
 
 interface DocumentProps {
     golf: Golf;
@@ -67,6 +68,7 @@ function Document({ golf, leaderboards }: DocumentProps) {
     const [resultSchem, setResultSchem] = useState(undefined);
     const commandBox = useRef<HTMLTextAreaElement>(null);
     const statusBox = useRef<HTMLTextAreaElement>(null);
+    const token = useToken();
 
     const cleanupTask = async (taskId: string) => {
         // Cleanup the broker
@@ -113,6 +115,10 @@ function Document({ golf, leaderboards }: DocumentProps) {
         if (taskId) {
             return;
         }
+        if (!token) {
+            statusBox.current!.value = `You must be signed in.`;
+            return;
+        }
         if (commandBox.current!.value.trim().length === 0) {
             statusBox.current!.value = `You must enter commands.`;
             return;
@@ -124,7 +130,7 @@ function Document({ golf, leaderboards }: DocumentProps) {
                 input: golf.start_schematic,
                 script: commandBox.current!.value,
                 test: golf.test_schematic,
-                token: 'cake'
+                token: token
             });
             if (queueResponse.taskId) {
                 setTaskId(queueResponse.taskId);
@@ -147,11 +153,17 @@ function Document({ golf, leaderboards }: DocumentProps) {
                     <h2>{golf.description}</h2>
                     <PreviewBox>
                         <PreviewArea>
-                            <Schematic size={width / 2.05} schematic={golf.start_schematic} />
+                            <Schematic
+                                size={width / 2.05}
+                                schematic={golf.start_schematic}
+                            />
                             <p>Before</p>
                         </PreviewArea>
                         <PreviewArea>
-                            <Schematic size={width/ 2.05} schematic={golf.test_schematic} />
+                            <Schematic
+                                size={width / 2.05}
+                                schematic={golf.test_schematic}
+                            />
                             <p>After</p>
                         </PreviewArea>
                     </PreviewBox>
@@ -162,7 +174,10 @@ function Document({ golf, leaderboards }: DocumentProps) {
                     <BaseTextStyle disabled={true} ref={statusBox} />
                     {resultSchem && (
                         <PreviewArea>
-                            <Schematic size={Math.min(width, 500)} schematic={resultSchem} />
+                            <Schematic
+                                size={Math.min(width, 500)}
+                                schematic={resultSchem}
+                            />
                             <p>Result</p>
                         </PreviewArea>
                     )}
