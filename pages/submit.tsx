@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, ReactNode } from 'react';
 import { Layout } from '../src/containers/Layout/Layout';
 import Head from 'next/head';
 import { useState } from 'react';
@@ -8,8 +8,25 @@ import Button from '../src/components/Input/Button';
 import { TextArea } from '../src/components/Input/TextArea';
 import Input from '../src/components/Input/Input';
 import { useAuthenticatedFetch } from '../src/components/Auth';
+import { Loading } from '../src/components/Loading';
 
-const Container = styled.div``;
+const Container = styled.div`
+    position: relative;
+`;
+
+const LoadingContainer = styled.div`
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+
+    h1 {
+        margin-left: 20px;
+    }
+`;
 
 type SchematicType = 'start' | 'test';
 
@@ -18,7 +35,18 @@ interface FileToLoad {
     value: File;
 }
 
-type Submitting = 'loading' | 'failed' | 'success' | undefined;
+type SubmittingType = 'loading' | 'failed' | 'success' | undefined;
+
+interface Submitting {
+    type: SubmittingType;
+    data?: ReactNode;
+}
+
+const InfoContainer = styled.div<{ color: string }>`
+    border: ${props => props.color} 2px solid;
+    border-radius: 3px;
+    background: ${props => props.color}66;
+`;
 
 const Submit = () => {
     const [name, setName] = useState<string>('');
@@ -36,7 +64,8 @@ const Submit = () => {
         !!test &&
         !!name &&
         !!description &&
-        submitting !== 'loading';
+        !(submitting && submitting.type === 'loading') &&
+        !(submitting && submitting.type !== 'success');
 
     const setLoadingFile = (type: SchematicType) => (value?: File) => {
         if (value) {
@@ -83,7 +112,7 @@ const Submit = () => {
             return;
         }
 
-        setSubmitting('loading');
+        setSubmitting({ type: 'loading' });
 
         fetch('/api/submit-golf', {
             method: 'POST',
@@ -100,19 +129,41 @@ const Submit = () => {
             .then(res => res.json())
             .then(({ golf_id }: { golf_id: string }) => {
                 if (!golf_id) {
-                    setSubmitting('failed');
+                    setSubmitting({ type: 'failed' });
                 } else {
-                    setSubmitting('success');
+                    setSubmitting({
+                        type: 'success',
+                        data: (
+                            <p>
+                                Successfully created golf, click{' '}
+                                <a href={'/golf/' + golf_id}>here</a> to view
+                            </p>
+                        )
+                    });
                 }
             })
             .catch(e => {
                 console.error(e);
-                setSubmitting('failed');
+                setSubmitting({ type: 'failed', data: e });
             });
     };
 
     return (
         <Container>
+            {submitting && submitting.type === 'loading' && (
+                <LoadingContainer>
+                    <Loading />
+                    <h1>Loading...</h1>
+                </LoadingContainer>
+            )}
+            <h1>Create Golf!</h1>
+            {submitting && submitting.data && (
+                <InfoContainer
+                    color={submitting.type === 'failed' ? '#ff0000' : '#00ff00'}
+                >
+                    {submitting.data}
+                </InfoContainer>
+            )}
             <Input onChange={setName} name="Title" />
             <TextArea onChange={setDescription} name="Description" />
             <FileSelector
