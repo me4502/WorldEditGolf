@@ -4,7 +4,7 @@ import * as React from "react";
 import {FunctionComponent} from "react";
 import {rem} from "../style/rem";
 
-const StyledNavLink = styled.a`
+export const StyledNavLink = styled.a`
     color: ${props => props.theme.primaryDarkColor};
     font-size: ${rem('18px')};
     line-height: ${rem('23px')};

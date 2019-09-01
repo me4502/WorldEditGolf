@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { Nav } from '../../components/Nav/Nav';
-import { NavLinkExternal } from '../../components/NavLink/NavLink';
+import { NavLinkExternal, NavLink } from '../../components/NavLink/NavLink';
 import styled from 'styled-components';
+
+const isServerRendered = typeof window === 'undefined';
 
 const Separator = styled.div`
     flex-grow: 1;
@@ -15,6 +17,9 @@ export const NavEngineHub: React.FunctionComponent<{
         <NavLinkExternal target="_blank" href="https://enginehub.org/">
             EngineHub.org
         </NavLinkExternal>
+        <NavLink href="/">
+            Home
+        </NavLink>
         <Separator />
         {!isAuthenticated && (
             <NavLinkExternal
@@ -24,7 +29,7 @@ export const NavEngineHub: React.FunctionComponent<{
                 Log in
             </NavLinkExternal>
         )}
-        {isAuthenticated && (
+        {isAuthenticated && !isServerRendered && (
             <NavLinkExternal key="logout" onClick={onLogOut}>
                 Log out
             </NavLinkExternal>
