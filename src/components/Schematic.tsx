@@ -13,6 +13,8 @@ const Container = styled.div`
     justify-content: center;
 
     canvas {
+        width: 0px;
+        height: 0px;
         border: solid 2px rgba(28, 28, 28, 0.3);
     }
 `;

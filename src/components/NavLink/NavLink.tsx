@@ -1,8 +1,8 @@
-import {styled} from "../style/styled";
-import Link, {LinkProps} from "next/link";
-import * as React from "react";
-import {FunctionComponent} from "react";
-import {rem} from "../style/rem";
+import { styled } from '../style/styled';
+import Link, { LinkProps } from 'next/link';
+import * as React from 'react';
+import { FunctionComponent } from 'react';
+import { rem } from '../style/rem';
 
 export const StyledNavLink = styled.a`
     color: ${props => props.theme.primaryDarkColor};
@@ -13,9 +13,11 @@ export const StyledNavLink = styled.a`
     display: inline-block;
 `;
 
-export const NavLink: FunctionComponent<Omit<LinkProps, 'passHref'>> = (props) => (
-    <Link {...props} passHref={true}>
-        <StyledNavLink>{props.children}</StyledNavLink>
+export const NavLink: FunctionComponent<
+    Omit<LinkProps, 'passHref'> & { className?: string }
+> = ({ className, children, ...rest }) => (
+    <Link {...rest} passHref={true}>
+        <StyledNavLink className={className}>{children}</StyledNavLink>
     </Link>
 );
 

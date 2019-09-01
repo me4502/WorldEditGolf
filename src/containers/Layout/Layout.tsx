@@ -15,6 +15,7 @@ const PageContainer = styled.div`
     max-width: 1000px;
     width: 100%;
     margin: auto;
+    padding-bottom: 120px;
     flex: 1;
 `;
 

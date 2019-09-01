@@ -15,7 +15,6 @@ import { useAuthenticatedPage } from '../src/components/Auth';
 
 const Container = styled.div`
     position: relative;
-    margin-bottom: 120px;
 `;
 
 const LoadingContainer = styled.div`
