@@ -9,6 +9,7 @@ interface SchematicProps {
 const Container = styled.div`
     display: flex;
     align-items: center;
+    justify-content: center;
 
     canvas {
         border: solid 2px rgba(28, 28, 28, 0.3);
