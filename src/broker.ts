@@ -29,21 +29,17 @@ export async function queueTask(request: QueueRequest): Promise<QueueResponse> {
         method: 'post',
         body: JSON.stringify(request),
         headers: {
-            authorization: request.token
-        },
-        mode: 'no-cors'
+            authorization: 'token ' + request.token
+        }
     })).json();
 }
 
 export async function clearTask(taskId: string): Promise<void> {
     await fetch(`${BROKER_API_HOSTNAME}/clear/${taskId}`, {
-        mode: 'no-cors'
+        method: 'post'
     });
 }
 
 export async function pollBroker(taskId: string): Promise<PollResponse> {
-    return (await fetch(`${BROKER_API_HOSTNAME}/poll/${taskId}`, {
-        method: 'post',
-        mode: 'no-cors'
-    })).json();
+    return (await fetch(`${BROKER_API_HOSTNAME}/poll/${taskId}`)).json();
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { NextPageContext } from 'next-server/dist/lib/utils';
 import { Layout } from '../../src/containers/Layout/Layout';
 import Head from 'next/head';
@@ -10,7 +10,8 @@ import {
     Leaderboard
 } from '../../src/components/Leaderboard/Leaderboard';
 import styled from 'styled-components';
-import { pollBroker, queueTask } from '../../src/broker';
+import { pollBroker, queueTask, clearTask } from '../../src/broker';
+import PrimaryTheme from '../../src/components/style/theme';
 
 interface DocumentProps {
     golf: Golf;
@@ -37,12 +38,22 @@ const SideLeaderboard = styled(Leaderboard)`
 `;
 
 const FancyButton = styled.button`
-    margin: 0 auto;
+    background-color: ${PrimaryTheme.brandColor};
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
 `;
 
 const BaseTextStyle = styled.textarea`
     width: 100%;
     resize: none;
+    height: 200px;
+    font-size: 1.3rem;
+    line-height: 1.5;
 `;
 
 const CommandBox = styled(BaseTextStyle)``;
@@ -51,17 +62,50 @@ const StatusBox = styled(BaseTextStyle)``;
 
 function Document({ golf, leaderboards }: DocumentProps) {
     const [taskId, setTaskId] = useState(undefined);
+    const commandBox = useRef<HTMLTextAreaElement>(null);
+    const statusBox = useRef<HTMLTextAreaElement>(null);
+
+    const cleanupTask = async (taskId: string) => {
+        // Cleanup the broker
+        await clearTask(taskId);
+        setTaskId(undefined);
+    };
+
     useEffect(() => {
-        const timeout = setInterval(() => {
+        const timeout = setInterval(async () => {
             if (taskId) {
-                pollBroker(taskId);
+                const pollResponse = await pollBroker(taskId);
+                switch (pollResponse.status) {
+                    case 'queued':
+                        statusBox.current!.value = `Queued. Position in queue: ${pollResponse.positionInQueue}`;
+                        break;
+                    case 'running':
+                        statusBox.current!.value = `Currently running... Please wait.`;
+                        break;
+                    case 'passed':
+                        statusBox.current!.value = `Passed!\n\n${pollResponse.log}`;
+                        await cleanupTask(taskId);
+                        break;
+                    case 'failed':
+                        statusBox.current!.value = `The schematics aren't the same!\n\n${pollResponse.log}`;
+                        await cleanupTask(taskId);
+                        break;
+                    case 'errored':
+                        statusBox.current!.value = `An error occurred :(\n\n${pollResponse.reason}`;
+                        await cleanupTask(taskId);
+                        break;
+                }
             }
         }, 1000);
         return () => clearInterval(timeout);
-    }, []);
+    }, [taskId]);
 
     const queueBroker = async () => {
         if (taskId) {
+            return;
+        }
+        if (commandBox.current!.value.trim().length === 0) {
+            statusBox.current!.value = `You must enter commands.`;
             return;
         }
         try {
@@ -69,16 +113,17 @@ function Document({ golf, leaderboards }: DocumentProps) {
                 golfId: golf.golf_id,
                 initial: golf.hidden,
                 input: golf.start_schematic,
-                script: '',
+                script: commandBox.current!.value,
                 test: golf.test_schematic,
-                token: ''
+                token: 'cake'
             });
             if (queueResponse.taskId) {
                 setTaskId(queueResponse.taskId);
+            } else {
+                statusBox.current!.value = `An error occurred`;
             }
         } catch (e) {
-            // TODO Show error dialog
-            alert(e);
+            statusBox.current!.value = `An error occurred :(\n\n${e}`;
         }
     };
 
@@ -95,10 +140,10 @@ function Document({ golf, leaderboards }: DocumentProps) {
                         <p>Before</p> <p>After</p>
                     </PreviewBox>
                     <h3>Commands</h3>
-                    <CommandBox />
+                    <CommandBox ref={commandBox} />
                     <FancyButton onClick={queueBroker}>Run</FancyButton>
                     <h3>Output</h3>
-                    <StatusBox disabled={true} />
+                    <StatusBox disabled={true} ref={statusBox} />
                 </MainContent>
                 <SideLeaderboard>
                     {leaderboards.map(leaderboard => {
