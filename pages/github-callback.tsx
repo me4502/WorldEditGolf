@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import router from 'next/router';
-import {Layout} from '../src/containers/Layout/Layout';
-import {useSetToken} from '../src/components/Auth';
-import {Loading} from '../src/components/Loading';
+import { Layout } from '../src/containers/Layout/Layout';
+import { useSetToken } from '../src/components/Auth';
+import { Loading } from '../src/components/Loading';
 import styled from 'styled-components';
 
 const LoadingContainer = styled.div`
@@ -17,7 +17,6 @@ const LoadingContainer = styled.div`
 `;
 
 const Page = () => {
-
   const [errorMessage, setError] = useState<string>();
 
   const setToken = useSetToken();
@@ -26,30 +25,46 @@ const Page = () => {
     const code = new URLSearchParams(location.search).get('code');
 
     if (!code) {
-      setError("Could not find code in query params!");
+      setError('Could not find code in query params!');
       return;
     }
 
-    fetch('/api/github-oauth', {method: 'POST', headers: {"content-type": "application/json"}, body: JSON.stringify({code})})
-      .then(res => res.json() as Promise<{error?: string, token?: string}>)
-      .then(({error, token}) => {
+    fetch('/api/github-oauth', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ code })
+    })
+      .then(res => res.json() as Promise<{ error?: string; token?: string }>)
+      .then(({ error, token }) => {
         if (token) {
           setToken(token);
           router.push('/');
         } else if (error) {
           setError(error);
         } else {
-          setError("An unexpected error occurred");
+          setError('An unexpected error occurred');
         }
       });
   }, []);
 
-  return errorMessage ? <h1>{errorMessage}</h1> : (<LoadingContainer>
-    <Loading />
-    <h1>Loading...</h1>
-    </LoadingContainer>);
+  return errorMessage ? (
+    <h1>{errorMessage}</h1>
+  ) : (
+    <LoadingContainer>
+      <Loading />
+      <h1>Loading...</h1>
+    </LoadingContainer>
+  );
+};
+
+const FullPage = () => (
+  <Layout>
+    <Page />
+  </Layout>
+);
+
+FullPage.getInitialProps = () => {
+  return {};
 }
 
-export default () => (<Layout>
-  <Page />
-</Layout>);
+export default FullPage;

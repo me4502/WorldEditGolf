@@ -1,36 +1,47 @@
-import React, {useContext, FunctionComponent, useState, useEffect} from 'react';
+import React, {
+  useContext,
+  FunctionComponent,
+  useState,
+  useEffect
+} from 'react';
 
-const getToken = () => typeof window !== 'undefined' ? window.localStorage.getItem('token') : ' ';
+const getToken = () =>
+  typeof window !== 'undefined' ? window.localStorage.getItem('token') : ' ';
 
-const AuthContext = React.createContext<{token?: string, setToken: (value?: string) => void}>({
-    token: getToken(),
-    setToken: () => {}
+const AuthContext = React.createContext<{
+  token?: string;
+  setToken: (value?: string) => void;
+}>({
+  token: getToken(),
+  setToken: () => {}
 });
 
-export const AuthProvider: FunctionComponent = ({children}) => {
-    const [token, setToken] = useState<string>(getToken());
+export const AuthProvider: FunctionComponent = ({ children }) => {
+  const [token, setToken] = useState<string>(getToken());
 
-    useEffect(() => {
-        setToken(getToken());
-    }, [])
+  useEffect(() => {
+    setToken(getToken());
+  }, []);
 
-    return (<AuthContext.Provider value={{token, setToken}}>
-        {children}
-    </AuthContext.Provider>);
-}
+  return (
+    <AuthContext.Provider value={{ token, setToken }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
 export const useSetToken: () => (value?: string) => void = () => {
-    const {setToken} = useContext(AuthContext);
+  const { setToken } = useContext(AuthContext);
 
-    const set = (value: string) => {
-        window.localStorage.setItem('token', value);
-        setToken(value);
-    };
+  const set = (value: string) => {
+    window.localStorage.setItem('token', value);
+    setToken(value);
+  };
 
-    return set;
+  return set;
 };
 
 export const useIsLoggedIn: () => boolean = () => {
-    const {token} = useContext(AuthContext);
-    return !!token;
-}
+  const { token } = useContext(AuthContext);
+  return !!token;
+};

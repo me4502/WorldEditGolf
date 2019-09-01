@@ -41,7 +41,7 @@ class MyDocument extends Document<any> {
                     {helmet.link.toComponent()}
                     {/* Global Site Tag (gtag.js) - Google Analytics */}
                     <script
-                        async
+                        async={true}
                         src={`https://www.googletagmanager.com/gtag/js?id=${process.env.GA_TRACKING_ID}`}
                     />
 
