@@ -8,7 +8,9 @@
   },
   "author": "",
   "license": "ISC",
-  "browserslist": ["since 2018"],
+  "browserslist": [
+    "since 2018"
+  ],
   "dependencies": {
     "@types/gzip-js": "^0.3.1",
     "gzip-js": "^0.3.2",
@@ -17,6 +19,8 @@
     "zlibt": "0.0.5"
   },
   "devDependencies": {
+    "babel-plugin-styled-components": "^1.10.6",
+    "styled-components": "^4.3.2",
     "typescript": "^3.6.2"
   }
 }

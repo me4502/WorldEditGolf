@@ -142,14 +142,13 @@ function parseNbt(nbt: string): Tag {
 }
 
 function buildSceneFromSchematic(tag: Tag, scene: Scene): [number, number, number] {
-    const blocks = tag.get("BlockData") as Buffer;
-    const width = (tag.get("Width") as Short).value;
-    const height = (tag.get("Height") as Short).value;
-    const length = (tag.get("Length") as Short).value;
+    const blocks = (tag as any).get("BlockData") as Buffer;
+    const width = ((tag as any).get("Width") as Short).value;
+    const height = ((tag as any).get("Height") as Short).value;
+    const length = ((tag as any).get("Length") as Short).value;
 
     const palette = new Map<number, string>();
-    console.log(tag.get("Palette"));
-    for (let [key, value] of tag.get("Palette").entries()) {        
+    for (let [key, value] of (tag as any).get("Palette").entries()) {        
         // sanitize the block name
         let colonIndex = key.indexOf(':');
         if (colonIndex !== -1) {
@@ -215,7 +214,7 @@ function buildSceneFromSchematic(tag: Tag, scene: Scene): [number, number, numbe
     return [width, height, length];
 }
 
-function renderSchematic(canvas: HTMLCanvasElement, schematic: string): () => void {
+export function renderSchematic(canvas: HTMLCanvasElement, schematic: string): () => void {
     const scene = new Scene();
     let hasDestroyed = false;
     let isDragging = false;
@@ -246,7 +245,7 @@ function renderSchematic(canvas: HTMLCanvasElement, schematic: string): () => vo
     };
 
     const rootTag = parseNbt(testSchematic);
-    const [worldWidth, worldHeight, worldLength] = buildSceneFromSchematic(rootTag.Schematic[0], scene);
+    const [worldWidth, worldHeight, worldLength] = buildSceneFromSchematic((rootTag as any).Schematic[0], scene);
     const cameraOffset = Math.max(worldWidth, worldLength) / 2 + 1;
     const camera = new OrthographicCamera(-cameraOffset, cameraOffset, cameraOffset, -cameraOffset, 0.01, 10000);
     camera.position.z = cameraOffset * 5;
@@ -270,7 +269,7 @@ function renderSchematic(canvas: HTMLCanvasElement, schematic: string): () => vo
     const gridMaterial = new MeshBasicMaterial({ color: new Color(0x000000), opacity: 0.3, transparent: true });
 
     // generate a 3d grid
-    /*for (let x = -worldWidth / 2; x <= worldWidth / 2; x++) {
+    for (let x = -worldWidth / 2; x <= worldWidth / 2; x++) {
         for (let y = -worldHeight / 2; y <= worldHeight / 2; y++) {
             const barMesh = new Mesh(gridGeom, gridMaterial);
             barMesh.scale.y = worldLength * 2;
@@ -298,7 +297,7 @@ function renderSchematic(canvas: HTMLCanvasElement, schematic: string): () => vo
             barMesh.position.z = z;
             scene.add(barMesh);
         }
-    }*/
+    }
     
     const renderer = new WebGLRenderer({ antialias: true, canvas });
     renderer.setClearColor(new Color(0xFFFFFF));
