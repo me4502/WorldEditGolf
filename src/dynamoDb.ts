@@ -183,7 +183,7 @@ export async function getAllGolfs(): Promise<Golf[]> {
     };
 
     return new Promise((resolve, reject) => {
-        docClient.query(queryParams, (err, data) => {
+        docClient.scan(queryParams, (err, data) => {
             if (err || !data || !data.Items) {
                 reject(err);
             } else {
