@@ -13,6 +13,7 @@ import { Schematic } from '../src/components/Schematic';
 
 const Container = styled.div`
     position: relative;
+    margin-bottom: 120px;
 `;
 
 const LoadingContainer = styled.div`
