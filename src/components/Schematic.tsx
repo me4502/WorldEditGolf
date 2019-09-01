@@ -1,4 +1,4 @@
-import { FunctionComponent, useRef, useEffect } from 'react';
+import { FunctionComponent, useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { renderSchematic } from '../../3d_test';
 
@@ -23,10 +23,19 @@ export const Schematic: FunctionComponent<SchematicProps> = ({
     ...rest
 }) => {
     const ref = useRef<HTMLCanvasElement>();
+    const [ resize, setResize ] = useState<(size: number) => void>();
+
+    useEffect(() => {
+        if (resize) {
+            resize(size);
+        }
+    }, [size]);
 
     useEffect(() => {
         if (schematic && ref.current) {
-            return renderSchematic(ref.current, schematic, size);
+            const { destroy, resize: r } = renderSchematic(ref.current, schematic, size);
+            setResize(() => r);
+            return destroy;
         }
     }, [schematic]);
 

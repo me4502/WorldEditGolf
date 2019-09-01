@@ -209,7 +209,12 @@ function buildSceneFromSchematic(tag: Tag, scene: Scene): [number, number, numbe
     return [width, height, length];
 }
 
-export function renderSchematic(canvas: HTMLCanvasElement, schematic: string, size: number): () => void {
+export interface SchematicHandles {
+    resize(size: number): void;
+    destroy(): void;
+}
+
+export function renderSchematic(canvas: HTMLCanvasElement, schematic: string, size: number): SchematicHandles {
     const scene = new Scene();
     let hasDestroyed = false;
     let isDragging = false;
@@ -319,10 +324,15 @@ export function renderSchematic(canvas: HTMLCanvasElement, schematic: string, si
     }
     render();
 
-    return () => {
-        hasDestroyed = true;
-        canvas.removeEventListener('mousedown', mousedownCallback);
-        document.body.removeEventListener('mousemove', mousemoveCallback);
-        document.body.removeEventListener('mouseup', mouseupCallback);
+    return {
+        resize(size: number): void {
+            renderer.setSize(size);
+        },
+        destroy() {
+            hasDestroyed = true;
+            canvas.removeEventListener('mousedown', mousedownCallback);
+            document.body.removeEventListener('mousemove', mousemoveCallback);
+            document.body.removeEventListener('mouseup', mouseupCallback);
+        }
     };
 }
