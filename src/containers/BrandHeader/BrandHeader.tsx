@@ -7,6 +7,7 @@ import {rem} from "../../components/style/rem";
 import {Header} from "../../components/Header/Header";
 import {Paragraph} from "../../components/Paragraph/Paragraph";
 import {Padding} from "../../components/style/padding";
+import Link from "../../../node_modules/next/link";
 
 const StyledContainerBase = styled.div`
   width: 100%;
@@ -27,7 +28,7 @@ export const BrandHeader: FunctionComponent = () => (
     <div>
         <StyledContainer>
             <Logo />
-            <Title>WorldEdit Golf</Title>
+            <Title><Link href="/"><a>WorldEdit Golf</a></Link></Title>
         </StyledContainer>
         <StyledContainerBase>
             <Header>Real WorldEdit ninjas count every command - do you?</Header>
