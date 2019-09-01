@@ -120,7 +120,7 @@ export async function getGolf(golfId: string): Promise<Golf> {
         }
     };
 
-    return new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
         docClient.get(readParams, (err, data) => {
             if (err || !data || !data.Item) {
                 reject(err);
@@ -141,14 +141,14 @@ export async function getLeaderboard(
                 user_id: 'test2',
                 score: 1,
                 commands: '//replace stone sand',
-                date: Date.now()
+                submitted_time: Date.now()
             },
             {
                 golf_id: 'test',
                 user_id: 'test3',
                 score: 2,
                 commands: '//replace stone cake\n//replace cake sand',
-                date: Date.now()
+                submitted_time: Date.now()
             }
         ]);
     }
@@ -160,7 +160,7 @@ export async function getLeaderboard(
         KeyConditionExpression: `golf_id = :golfId`
     };
 
-    return new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
         docClient.query(queryParams, (err, data) => {
             if (err || !data || !data.Items) {
                 reject(err);
@@ -177,7 +177,7 @@ export async function addGolf(golf: Golf): Promise<void> {
         Item: golf
     };
 
-    return new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
         docClient.put(createParams, (err, _data) => {
             if (err) {
                 reject(err);
@@ -200,7 +200,7 @@ export async function unhideGolf(golfId: string): Promise<void> {
         }
     };
 
-    return new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
         docClient.update(updateParams, (err, _data) => {
             if (err) {
                 reject(err);
@@ -217,22 +217,24 @@ export async function addLeaderboard(
     const updateParams: AWS.DynamoDB.DocumentClient.UpdateItemInput = {
         TableName: LeaderboardTableName,
         Key: {
-            golf_id: leaderboard.golf_id,
-            user_id: leaderboard.user_id
+            golf_id: `${leaderboard.golf_id}`,
+            user_id: `${leaderboard.user_id}`
         },
-        UpdateExpression: `set commands=:commands, score=:score, date=:date`,
+        UpdateExpression: `set commands=:commands, score=:score, submitted_time=:submitted_time`,
         ExpressionAttributeValues: {
             ':commands': leaderboard.commands,
             ':score': leaderboard.score,
-            ':date': leaderboard.date
+            ':submitted_time': leaderboard.submitted_time
         }
     };
 
-    return new Promise((resolve, reject) => {
-        docClient.update(updateParams, (err, _data) => {
+    return await new Promise((resolve, reject) => {
+        docClient.update(updateParams, (err, data) => {
             if (err) {
+                console.log(err);
                 reject(err);
             } else {
+                console.log(data);
                 resolve();
             }
         });
@@ -243,7 +245,7 @@ export async function addUser(user: User): Promise<void> {
     const updateParams: AWS.DynamoDB.DocumentClient.UpdateItemInput = {
         TableName: UsersTableName,
         Key: {
-            user_id: user.user_id
+            user_id: `${user.user_id}`
         },
         UpdateExpression: `set avatar=:avatar, username=:username, name=:name`,
         ExpressionAttributeValues: {
@@ -253,11 +255,13 @@ export async function addUser(user: User): Promise<void> {
         }
     };
 
-    return new Promise((resolve, reject) => {
-        docClient.update(updateParams, (err, _data) => {
+    return await new Promise((resolve, reject) => {
+        docClient.update(updateParams, (err, data) => {
             if (err) {
+                console.log(err);
                 reject(err);
             } else {
+                console.log(data);
                 resolve();
             }
         });
@@ -277,11 +281,11 @@ export async function getUser(userId: string): Promise<User> {
     const readParams: AWS.DynamoDB.DocumentClient.GetItemInput = {
         TableName: UsersTableName,
         Key: {
-            user_id: userId
+            user_id: `${userId}`
         }
     };
 
-    return new Promise((resolve, reject) => {
+    return await new Promise((resolve, reject) => {
         docClient.get(readParams, (err, data) => {
             if (err || !data || !data.Item) {
                 reject(err);

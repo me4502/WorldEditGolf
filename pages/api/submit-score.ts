@@ -22,7 +22,7 @@ const handler = withAuth(async (req, res) => {
             score: score,
             user_id: req.githubId,
             commands,
-            date: Date.now()
+            submitted_time: Date.now()
         });
         res.end('Score submitted');
     } catch (e) {

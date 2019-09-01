@@ -14,7 +14,7 @@ export interface GolfLeaderboard {
     user_id: string;
     score: number;
     commands: string;
-    date: number;
+    submitted_time: number;
 }
 
 export interface User {

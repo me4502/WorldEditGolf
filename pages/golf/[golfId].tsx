@@ -180,7 +180,7 @@ function Document({ golf, leaderboards, userMap }: DocumentProps) {
                 </MainContent>
                 <SideLeaderboard>
                     {leaderboards.map(leaderboard => {
-                        const date = new Date(leaderboard.date);
+                        const date = new Date(leaderboard.submitted_time);
                         const user = userMap.get(leaderboard.user_id);
                         return (
                             <LeaderboardEntry
@@ -226,7 +226,7 @@ Document.getInitialProps = async ({ query, res }: NextPageContext) => {
 
     if (leaderboards) {
         const sortedLeaderboards = leaderboards.sort((a, b) => {   
-            return a.score - b.score || a.date - b.date;
+            return a.score - b.score || a.submitted_time - b.submitted_time;
         });
         const leaderUsers = sortedLeaderboards.map(lead => lead.user_id);
         const users = await Promise.all(leaderUsers.map(user => getUser(user)));
