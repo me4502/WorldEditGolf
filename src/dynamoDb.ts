@@ -251,12 +251,11 @@ export async function addLeaderboard(
     };
 
     return await new Promise((resolve, reject) => {
-        docClient.update(updateParams, (err, data) => {
+        docClient.update(updateParams, (err, _data) => {
             if (err) {
                 console.log(err);
                 reject(err);
             } else {
-                console.log(data);
                 resolve();
             }
         });
@@ -278,12 +277,11 @@ export async function addUser(user: User): Promise<void> {
     };
 
     return await new Promise((resolve, reject) => {
-        docClient.update(updateParams, (err, data) => {
+        docClient.update(updateParams, (err, _data) => {
             if (err) {
                 console.log(err);
                 reject(err);
             } else {
-                console.log(data);
                 resolve();
             }
         });

@@ -17,7 +17,7 @@ export const NavEngineHub: React.FunctionComponent<{
         <NavLinkExternal target="_blank" href="https://enginehub.org/">
             EngineHub.org
         </NavLinkExternal>
-        <NavLink href="/">
+        <NavLink href="/" as="/">
             Home
         </NavLink>
         <Separator />

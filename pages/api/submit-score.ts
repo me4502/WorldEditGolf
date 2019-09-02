@@ -1,12 +1,13 @@
 import { addLeaderboard, unhideGolf } from '../../src/dynamoDb';
 import { withAuth } from '../../src/auth';
+import safeCompare from 'safe-compare';
 
 const EXPECTED_KEY = process.env.BROKER_API_KEY;
 
 const handler = withAuth(async (req, res) => {
     const { api_key, golfId, score, commands, initial } = req.body;
 
-    if (api_key !== EXPECTED_KEY) {
+    if (!safeCompare(api_key, EXPECTED_KEY)) {
         res.status(403);
         res.end(`Invalid API Key`);
         return;
