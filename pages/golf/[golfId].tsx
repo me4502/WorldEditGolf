@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { NextPageContext } from 'next-server/dist/lib/utils';
 import { Layout } from '../../src/containers/Layout/Layout';
 import Head from 'next/head';
@@ -19,7 +19,7 @@ import { Button } from '../../src/components/Input/Button';
 interface DocumentProps {
     golf: Golf;
     leaderboards: GolfLeaderboard[];
-    userMap: {[key: string]: User};
+    userMap: { [key: string]: User };
 }
 
 const PageColumns = styled.div`
@@ -51,9 +51,48 @@ const BaseTextStyle = styled.textarea`
     line-height: 1.5;
 `;
 
-const PreviewArea = styled.div``;
+interface SchematicBoxProps {
+    schematic: string;
+    size: number;
+    title: string;
+}
 
-const ResultPreview = styled(PreviewArea)`
+const SchematicBoxText = styled.div`
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+`;
+
+const SchematicBox: React.FC<SchematicBoxProps> = ({
+    schematic,
+    size,
+    title
+}) => {
+    const onClickDownload = () => {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;base64,' + schematic);
+        element.setAttribute('download', `${title}.schem`);
+      
+        element.style.display = 'none';
+        document.body.appendChild(element);
+      
+        element.click();
+      
+        document.body.removeChild(element);      
+    };
+
+    return (
+        <div>
+            <Schematic size={size} schematic={schematic} />
+            <SchematicBoxText>
+                <p>{title}</p>
+                <Button onClick={onClickDownload}>Download</Button>
+            </SchematicBoxText>
+        </div>
+    );
+};
+
+const ResultPreview = styled(SchematicBox)`
     margin-top: 48px;
 `;
 
@@ -148,20 +187,16 @@ function Document({ golf, leaderboards, userMap }: DocumentProps) {
                     <h1>{golf.title}</h1>
                     <h2>{golf.description}</h2>
                     <PreviewBox>
-                        <PreviewArea>
-                            <Schematic
-                                size={smallSize}
-                                schematic={golf.start_schematic}
-                            />
-                            <p>Before</p>
-                        </PreviewArea>
-                        <PreviewArea>
-                            <Schematic
-                                size={smallSize}
-                                schematic={golf.test_schematic}
-                            />
-                            <p>After</p>
-                        </PreviewArea>
+                        <SchematicBox
+                            schematic={golf.start_schematic}
+                            size={smallSize}
+                            title={'Before'}
+                        />
+                        <SchematicBox
+                            schematic={golf.test_schematic}
+                            size={smallSize}
+                            title={'After'}
+                        />
                     </PreviewBox>
                     <h3>Commands</h3>
                     <BaseTextStyle ref={commandBox} />
@@ -169,13 +204,11 @@ function Document({ golf, leaderboards, userMap }: DocumentProps) {
                     <h3>Output</h3>
                     <BaseTextStyle disabled={true} ref={statusBox} />
                     {resultSchem && (
-                        <ResultPreview>
-                            <Schematic
-                                size={Math.min(width, 500)}
-                                schematic={resultSchem}
-                            />
-                            <p>Result</p>
-                        </ResultPreview>
+                        <ResultPreview
+                            size={Math.min(width, 500)}
+                            schematic={resultSchem}
+                            title={'Result'}
+                        />
                     )}
                 </MainContent>
                 <SideLeaderboard>
@@ -194,7 +227,9 @@ function Document({ golf, leaderboards, userMap }: DocumentProps) {
                                     ' ' +
                                     date.toDateString()
                                 }
-                                githubId={user ? user.username : leaderboard.user_id}
+                                githubId={
+                                    user ? user.username : leaderboard.user_id
+                                }
                                 name={
                                     user ? user.fullname : leaderboard.user_id
                                 }

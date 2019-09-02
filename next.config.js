@@ -4,8 +4,7 @@ const ASSETS_PREFIX = 'https://static.worldedit.golf';
 
 module.exports = {
     target: 'serverless',
-    assetPrefix: ASSETS_PREFIX,
-    assetsPrefix: ASSETS_PREFIX,
+    assetPrefix: prod ? ASSETS_PREFIX : undefined,
     env: {
         STATIC_PREFIX: prod ? ASSETS_PREFIX : '',
         CLIENT_ID: process.env.CLIENT_ID,
