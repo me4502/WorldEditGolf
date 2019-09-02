@@ -45,8 +45,6 @@ const handler = withAuth(async (req, res) => {
     const golf_id = shortid();
 
     try {
-        console.error('Creating golf', golf_id);
-
         await addGolf({
             title,
             start_schematic,
@@ -57,8 +55,6 @@ const handler = withAuth(async (req, res) => {
             user_id: req.githubId,
             created_at: Date.now()
         });
-
-        console.error('Golf', golf_id, 'created successfully');
 
         res.status(200);
         res.write(JSON.stringify({ golf_id }));

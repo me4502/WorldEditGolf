@@ -190,7 +190,7 @@ export async function getSingleLeaderboard(
         TableName: LeaderboardTableName,
         Key: {
             golf_id: golfId,
-            user_id: userId
+            user_id: `${userId}`
         }
     };
 

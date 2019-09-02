@@ -35,8 +35,6 @@ export const useSetToken: () => (value?: string) => void = () => {
     const { setToken } = useContext(AuthContext);
 
     const set = (value?: string) => {
-        console.error(value);
-
         if (value) {
             window.localStorage.setItem('token', value);
         } else {

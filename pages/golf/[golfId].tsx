@@ -112,8 +112,6 @@ function Document({ golf, leaderboards, userMap }: DocumentProps) {
     const contentRef = useRef<HTMLDivElement>();
     const width = useElementWidth(contentRef);
 
-    console.error(width);
-
     useEffect(() => {
         const timeout = setInterval(async () => {
             if (taskId) {
