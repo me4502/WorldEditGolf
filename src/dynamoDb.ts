@@ -1,6 +1,5 @@
 import AWS from 'aws-sdk';
 import { Golf, GolfLeaderboard, User } from './types/database';
-import { resolve } from 'dns';
 
 AWS.config.update({
     region: 'us-east-1'
