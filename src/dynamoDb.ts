@@ -1,5 +1,6 @@
 import AWS from 'aws-sdk';
 import { Golf, GolfLeaderboard, User } from './types/database';
+import { resolve } from 'dns';
 
 AWS.config.update({
     region: 'us-east-1'
@@ -173,6 +174,38 @@ export async function getLeaderboard(
     });
 }
 
+export async function getSingleLeaderboard(
+    golfId: string,
+    userId: string
+): Promise<GolfLeaderboard> {
+    if (process.env.NODE_ENV !== 'production') {
+        return Promise.resolve({
+            golf_id: golfId,
+            user_id: userId,
+            score: 1,
+            commands: '//replace stone sand',
+            submitted_time: Date.now()
+        });
+    }
+    const queryParams: AWS.DynamoDB.DocumentClient.GetItemInput = {
+        TableName: LeaderboardTableName,
+        Key: {
+            golf_id: golfId,
+            user_id: userId
+        }
+    };
+
+    return await new Promise((resolve, reject) => {
+        docClient.get(queryParams, (err, data) => {
+            if (err || !data || !data.Item) {
+                reject(err);
+            } else {
+                resolve(data.Item as GolfLeaderboard);
+            }
+        });
+    });
+}
+
 export async function getAllGolfs(): Promise<Golf[]> {
     if (process.env.NODE_ENV !== 'production') {
         return Promise.resolve([TEST_GOLF, TEST_GOLF, TEST_GOLF]);
@@ -236,6 +269,15 @@ export async function unhideGolf(golfId: string): Promise<void> {
 export async function addLeaderboard(
     leaderboard: GolfLeaderboard
 ): Promise<void> {
+    let existingEntry = undefined;
+    try {
+        existingEntry = await getSingleLeaderboard(leaderboard.golf_id, leaderboard.user_id);
+    } catch (e) {
+    }
+    if (existingEntry && existingEntry.score <= leaderboard.score) {
+        // Don't add a score worse than their best
+        return Promise.resolve();
+    }
     const updateParams: AWS.DynamoDB.DocumentClient.UpdateItemInput = {
         TableName: LeaderboardTableName,
         Key: {
