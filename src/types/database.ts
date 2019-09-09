@@ -2,7 +2,6 @@ export interface Golf {
     golf_id: string;
     start_schematic: string;
     test_schematic: string;
-    isHidden: boolean;
     title: string;
     description: string;
     created_at: number;

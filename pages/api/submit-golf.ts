@@ -44,13 +44,26 @@ const handler = withAuth(async (req, res) => {
     const { title, start_schematic, test_schematic, description } = data;
     const golf_id = shortid();
 
+    if (
+        Buffer.from(start_schematic).length > 1024 * 32 ||
+        Buffer.from(test_schematic).length > 1024 * 32
+    ) {
+        res.status(400);
+        res.write(
+            JSON.stringify({
+                error: `Schematic files cannot be larger than 32kb.`
+            })
+        );
+        res.end();
+        return;
+    }
+
     try {
         await addGolf({
             title,
             start_schematic,
             test_schematic,
             description,
-            isHidden: true,
             golf_id,
             user_id: req.githubId,
             created_at: Date.now()

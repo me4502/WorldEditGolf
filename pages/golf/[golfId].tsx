@@ -157,7 +157,7 @@ function Document({ golf, leaderboards, userMap }: DocumentProps) {
         try {
             const queueResponse = await queueTask({
                 golfId: golf.golf_id,
-                initial: golf.isHidden,
+                initial: false,
                 input: golf.start_schematic,
                 script: commandBox.current!.value,
                 test: golf.test_schematic,
